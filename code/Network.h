@@ -6,11 +6,11 @@ class Network
 	public:
 		Network();
 		~Network();
-		void CreateConnection(int portNumber);
-		void SendMessage(std::string message);
-		std::string ReceiveMessage();
+		int CreateConnection(const char * sluiceIP, int portNumber);
+		void CloseConnection(int sock);
+		void SendMessage(int sock, std::string message);
+		char* ReceiveMessage(int sock);
 	private:
 		int portNumber;
-}
-
+};
 #endif
