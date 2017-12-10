@@ -4,13 +4,13 @@
 class IValve
 {
 	public:
-		virtual ~IDoor();
+		virtual ~IValve(){}
 		virtual bool GetValveStatus();
 		virtual void OpenValve();
 		virtual void CloseValve();
 		
 	private:
 		bool valveStatus;
-}
+};
 
 #endif

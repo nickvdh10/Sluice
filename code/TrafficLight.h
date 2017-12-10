@@ -1,16 +1,17 @@
 #ifndef TRAFFICLIGHT_H
 #define TRAFFICLIGHT_H
 
-#include TrafficLight.h
+#include "ITrafficLight.h"
 
 class TrafficLight: public ITrafficLight
 {
     public:
         TrafficLight(bool lightStatus)
-        ~ITrafficLight();
+        ~ITrafficLight(){}
+        bool GetLightStatus();
         void SetGreen();
         void SetRed();
     private:
-        bool LightStatus;
+        bool lightStatus;
 };
 #endif

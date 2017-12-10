@@ -6,6 +6,8 @@
 class HighWaterDoor : public Door
 {
 	public:
+	HighWaterDoor();
+	~HighWaterDoor{}
 	void ToHighWaterLevel();
 }
 

@@ -1,6 +1,8 @@
 #ifndef IDOOR_H
 #define IDOOR_H
 
+#include <string>
+
 class IDoor
 {
 	public:
@@ -11,6 +13,6 @@ class IDoor
 	private:
 		bool doorStatus;
 		std::string motorType;
-}
+};
 
 #endif

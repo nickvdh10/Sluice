@@ -1,11 +1,19 @@
 #include "Door.h"
 
 
-void OpenDoor()
+Door::Door()
+:doorStatus(true)
+,motorType("")
 {
-
+	//TODO: initialize vector with 3 valves
 }
-void CloseDoor()
+
+void Door::OpenDoor()
 {
-    
+	doorStatus = true;
+}
+
+void Door::CloseDoor()
+{
+    doorStatus = false;
 }

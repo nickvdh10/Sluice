@@ -3,20 +3,20 @@
 
 #include "IDoor.h"
 #include "IValve.h"
+#include <vector>
+#include <string>
 
 class Door: public IDoor
 {
 	public:
 		Door();
-		~Door();
+		~Door(){}
 		void OpenDoor();
 		void CloseDoor();
 	private:
-		IValve valve1;
-		IValve valve2;
-		IValve valve3;
-		bool doorStatus();
-		std::string motorType();
-}
+		std::vector<IValve> valves;
+		bool doorStatus;
+		std::string motorType;
+};
 
 #endif

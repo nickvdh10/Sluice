@@ -7,13 +7,13 @@ class Valve : public IValve
 {
 	public:
 		Valve();
-		~IValve();
+		~Valve(){}
 		bool GetValveStatus();
 		void OpenValve();
 		void CloseValve();
 		
 	private:
 		bool valveStatus;
-}
+};
 
 #endif

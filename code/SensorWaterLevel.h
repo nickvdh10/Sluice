@@ -1,13 +1,13 @@
 #ifndef SENSORWATERLEVEL_H
 #define SENSORWATERLEVEL_H
 
-#include ISensorWaterLevel.h
+#include "ISensorWaterLevel.h"
 
 class SensorWaterLevel: public ISensorWaterLevel
 {
     public:
         SensorWaterLevel();
-        ~SensorWaterLevel();
+        ~SensorWaterLevel(){}
         double GetWaterLevelSluice();
         double GetWaterLevelLow();
         double GetWaterLevelHigh();
