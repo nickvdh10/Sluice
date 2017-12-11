@@ -27,6 +27,6 @@ class Sluice
 		ITrafficLight* four;
 		double waterLevel;
 		bool sluiceStatus;
-}
+};
 
 #endif

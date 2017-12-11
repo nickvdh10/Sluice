@@ -9,6 +9,6 @@ class LowWaterDoor : public Door
 	LowWaterDoor();
 	~LowWaterDoor{}
 	void ToLowWaterLevel();
-}
+};
 
 #endif

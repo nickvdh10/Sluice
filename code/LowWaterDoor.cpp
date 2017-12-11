@@ -4,6 +4,6 @@ LowWaterDoor::LowWaterDoor()
 {
 }
 
-LowWaterDoor::ToLowWaterLevel()
+void LowWaterDoor::ToLowWaterLevel()
 {	
 }
