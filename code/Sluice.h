@@ -10,13 +10,12 @@
 class Sluice
 {
 	public:
-		Sluice();
-		
+		Sluice(int portNumber);
 		~Sluice();
-		
-		double GetWaterLevel();
-		
-		bool GetSluiceStatus();
+		double GetWaterLevel() const;
+		bool GetSluiceStatus() const;
+		int GetPortNumber() const;
+		void SendCommand(std::string SendCommand);
 		
 	private:
 		IDoor* highWaterDoor;
@@ -25,6 +24,9 @@ class Sluice
 		ITrafficLight* two;
 		ITrafficLight* three;
 		ITrafficLight* four;
+		int portNumber;
+		int sock;
+
 		double waterLevel;
 		bool sluiceStatus;
 };
