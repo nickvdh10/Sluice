@@ -3,6 +3,10 @@
 #include <memory.h>     // for memset()
 #include <arpa/inet.h>  // for sockaddr_in and inet_ntoa() 
 
+Network::NetWork()
+{
+}
+
 int CreateConnection(const char * sluiceIP, int portNumber)
 {
     std::cout << sluiceIP << " " << portNumber << "\n";
