@@ -1,6 +1,5 @@
 #include "Door.h"
 
-
 Door::Door()
 :doorStatus(true)
 ,motorType("")
@@ -25,7 +24,7 @@ void Door::CloseDoor()
 
 std::string Door::CreateDoorMessage(std::string side, std::string action, bool get)
 {
-	if (!side.comapre("Left") || !side.comapre("Right"))
+	/*if (!side.comapre("Left") || !side.comapre("Right"))
 	{
 		if (!action.compare("open") || !action.compare("close") || !action.compare("stop"))
 		{
@@ -37,8 +36,9 @@ std::string Door::CreateDoorMessage(std::string side, std::string action, bool g
 			// Set asked
 			return "SetDoor" + side + ":" + action + ";";
 		}
-	}
-	return "";
+	}*/
+	get = !get;
+	return side + action;
 }
 
 

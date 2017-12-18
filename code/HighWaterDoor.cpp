@@ -2,8 +2,10 @@
 
 HighWaterDoor::HighWaterDoor()
 {
+	
 }
 
-HighWaterDoor::ToHighWaterLevel()
-{	
+void HighWaterDoor::ToHighWaterLevel()
+{
+	
 }

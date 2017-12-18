@@ -4,32 +4,39 @@ const char* standardIp = "127.0.0.1";
 
 Sluice::Sluice(int portNumber)
 :portNumber(portNumber)
-,waterLevel(waterLevel)
-,sluiceStatus(sluiceStatus)
+,waterLevel(0)
+,sluiceStatus(false)
 {
-    Network* network;
+    network = new Network();
     sock = network->CreateConnection(standardIp, portNumber);
 }
 Sluice::~Sluice()
 {
-
+	delete network;
 }
 
-double Sluice::GetWaterLevel()
+double Sluice::GetWaterLevel() const
 {
-    return waterLevel
+    return waterLevel;
 }
 
-bool Sluice::GetSluiceStatus()
+bool Sluice::GetSluiceStatus() const
 {
     return sluiceStatus;
 }
-int GetPortNumber()
+
+int Sluice::GetPortNumber() const
 {
     return portNumber;
 }
-void SendCommand(std::string command)
+
+int Sluice::GetSock() const
 {
-    Network* network;
+	return sock;
+}
+
+void Sluice::SendCommand(std::string command)
+{
     network->SendMessage(sock, command);
+    network->ReceiveMessage(sock);
 }

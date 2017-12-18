@@ -4,10 +4,10 @@
 class ISensorWaterLevel
 {
     public:
-        virtual ~SensorWaterLevel();
-        virtual double GetWaterLevelSluice();
-        virtual double GetWaterLevelLow();
-        virtual double GetWaterLevelHigh();
+        ~ISensorWaterLevel() {}
+        double GetWaterLevelSluice();
+        double GetWaterLevelLow();
+        double GetWaterLevelHigh();
     private:
         double waterLevelSluice;
         double waterLevelLow;

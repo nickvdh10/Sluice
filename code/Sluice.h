@@ -15,6 +15,7 @@ class Sluice
 		double GetWaterLevel() const;
 		bool GetSluiceStatus() const;
 		int GetPortNumber() const;
+		int GetSock() const;
 		void SendCommand(std::string SendCommand);
 		
 	private:
@@ -24,9 +25,9 @@ class Sluice
 		ITrafficLight* two;
 		ITrafficLight* three;
 		ITrafficLight* four;
+		Network* network;
 		int portNumber;
 		int sock;
-
 		double waterLevel;
 		bool sluiceStatus;
 };

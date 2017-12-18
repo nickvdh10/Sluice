@@ -18,3 +18,5 @@ void Valve::CloseValve()
 {
 	valveStatus = false;
 }
+
+//TODO: add private copy const

@@ -1,6 +1,8 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+#include <string>
+
 class Network
 {
 	public:
@@ -9,7 +11,7 @@ class Network
 		int CreateConnection(const char * sluiceIP, int portNumber);
 		void CloseConnection(int sock);
 		void SendMessage(int sock, std::string message);
-		char* ReceiveMessage(int sock);
+		void ReceiveMessage(int sock);
 	private:
 		int portNumber;
 };

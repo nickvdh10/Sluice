@@ -6,8 +6,8 @@
 class TrafficLight: public ITrafficLight
 {
     public:
-        TrafficLight(bool lightStatus)
-        ~ITrafficLight(){}
+        TrafficLight(bool lightStatus);
+        ~TrafficLight(){}
         bool GetLightStatus();
         void SetGreen();
         void SetRed();

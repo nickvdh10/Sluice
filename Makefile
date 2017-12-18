@@ -1,26 +1,20 @@
-BINARIES=sluice
-CXX=g++ -std=c++11
-CXXFLAGS=-g -Wall
-LDFLAGS=-lrt -lpthread
-SOURCES=$(wildcard Code/*.cpp)
-OBJECTS=$(SOURCES:.cpp=.o)
-LIB_OBJECTS=$(wildcard Objects/*.o)
+CFLAGS=-Wall -Werror -Wextra -pedantic -O3 -ggdb -fopenmp -std=c++98 -Icode
+LDDFLAGS=-lmyhash -lmyfilestructure -lpthread
 
-.PHONY: all clean
+MAIN_SOURCES=$(wildcard code/*.cpp)
+MAIN_LIBS=-Llib
 
-all:sluice
-	@echo "Building All\n"
+TEST_LIBS=-lgtest -lgtest_main -lpthread
 
-sluice:$(OBJECTS) $(LIB_OBJECTS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDFLAGS)
-	@echo "Building Sluice\n"
+CC=g++
 
-cleanandmake:clean sluice
-	@echo "Cleaning and Building Automagically\n"
+.phony: all clean install submit
 
-%.o: %.c
-	$(CXX) $(CXXFLAGS) -c $< -o $@ -I.
+sluice: $(MAIN_OBJECTS) 
+	@$(CC) $(CFLAGS) $(MAIN_LIBS) $(MAIN_SOURCES) -o $@ $(LDDFLAGS)
+	
+all: sluice
 
-clean: 
-	@rm -rf $(BINARIES) Code/*.o test/*.o
-	@echo "Cleaning Build\n"
+clean:
+	@rm -rf sluice code/*.o test/*.o *.bin
+

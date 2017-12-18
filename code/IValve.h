@@ -4,10 +4,10 @@
 class IValve
 {
 	public:
-		virtual ~IValve(){}
-		virtual bool GetValveStatus();
-		virtual void OpenValve();
-		virtual void CloseValve();
+		~IValve(){}
+		bool GetValveStatus();
+		void OpenValve();
+		void CloseValve();
 		
 	private:
 		bool valveStatus;

@@ -6,9 +6,9 @@
 class IDoor
 {
 	public:
-		virtual ~IDoor();
-		virtual void OpenDoor();
-		virtual void CloseDoor();
+		~IDoor(){}
+		void OpenDoor();
+		void CloseDoor();
 		
 	private:
 		bool doorStatus;

@@ -1,13 +1,21 @@
 #include "Network.h"
+#include <stdexcept>
 #include <iostream>
 #include <memory.h>     // for memset()
 #include <arpa/inet.h>  // for sockaddr_in and inet_ntoa() 
+#include <unistd.h> // for close()
 
-Network::NetWork()
+Network::Network()
 {
+	
 }
 
-int CreateConnection(const char * sluiceIP, int portNumber)
+Network::~Network()
+{
+	
+}
+
+int Network::CreateConnection(const char * sluiceIP, int portNumber)
 {
     std::cout << sluiceIP << " " << portNumber << "\n";
 	int sock = 0;
@@ -19,7 +27,7 @@ int CreateConnection(const char * sluiceIP, int portNumber)
     memset(&echoServAddr, 0, sizeof(echoServAddr));
     echoServAddr.sin_family      = AF_INET;            
     echoServAddr.sin_addr.s_addr = inet_addr(sluiceIP);   
-    echoServAddr.sin_port        = htons(sluicePort); 
+    echoServAddr.sin_port        = htons(portNumber); 
     if(connect(sock, (struct sockaddr *) &echoServAddr, sizeof(echoServAddr)) < 0)
 	{
 		std::cout << "failed to connect\n";
@@ -27,11 +35,12 @@ int CreateConnection(const char * sluiceIP, int portNumber)
 	}
 	else
 	{
-		std::cout << "connected with " << sluicePort << std::endl;
+		std::cout << "connected with " << portNumber << std::endl;
     }
     return sock;
 }
-void CloseConnection(int sock)
+
+void Network::CloseConnection(int sock)
 {
     if(sock > 0)
 	{
@@ -39,23 +48,25 @@ void CloseConnection(int sock)
 		std::cout << "sock closed\n";
 	}
 }
-void SendMessage(int sock, std::string message)
+
+void Network::SendMessage(int sock, std::string message)
 {
-    int echoStringLen = strlen(stringToSend.c_str()); 
-	send(sock, stringToSend.c_str(), echoStringLen, 0);
+    int echoStringLen = strlen(message.c_str()); 
+	send(sock, message.c_str(), echoStringLen, 0);
 }
-char* ReceiveMessage(int sock)
+
+void Network::ReceiveMessage(int sock)
 {
-    char* receiveString;
-    recv(sock, receiveString, 30, 0); //30 is bufsize om te ontvangen.
-    receiveString[30]= '\0';
-    if(receiveString < 0)
+    char receiveString[30];
+    int bytesRcvd = recv(sock, receiveString, 30, 0); //30 is bufsize om te ontvangen.
+    receiveString[bytesRcvd]= '\0';
+   
+    if(bytesRcvd > 0 && receiveString != NULL && receiveString[0] == '\0')
     {
-        std::cout << "No message received\n";
+        throw std::invalid_argument("String is empty or NULL");   
     }
     else
     {
-        std::out << "message received: " << receiveString << std::endl;
-
+        std::cout << "message received: " << receiveString << std::endl;
     }
 }

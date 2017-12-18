@@ -4,9 +4,9 @@
 class ITrafficLight
 {
     public:
-        virtual ~ITrafficLight();
-        virtual void SetGreen();
-        virtual void SetRed();
+        ~ITrafficLight();
+        void SetGreen();
+        void SetRed();
     private:
         bool LightStatus;
 };
