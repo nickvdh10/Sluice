@@ -55,7 +55,7 @@ void Network::SendMessage(int sock, std::string message)
 	send(sock, message.c_str(), echoStringLen, 0);
 }
 
-void Network::ReceiveMessage(int sock)
+std::string Network::ReceiveMessage(int sock)
 {
     char receiveString[30];
     int bytesRcvd = recv(sock, receiveString, 30, 0); //30 is bufsize om te ontvangen.
@@ -68,5 +68,6 @@ void Network::ReceiveMessage(int sock)
     else
     {
         std::cout << "message received: " << receiveString << std::endl;
+        return receiveString;
     }
 }

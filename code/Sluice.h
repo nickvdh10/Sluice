@@ -16,7 +16,10 @@ class Sluice
 		bool GetSluiceStatus() const;
 		int GetPortNumber() const;
 		int GetSock() const;
+		void SetSluiceState(std::string);
+		int StartSluicing();
 		void SendCommand(std::string SendCommand);
+		ISensorWaterLevel* sensorWaterLevel;
 		
 	private:
 		IDoor* highWaterDoor;
@@ -25,11 +28,13 @@ class Sluice
 		ITrafficLight* two;
 		ITrafficLight* three;
 		ITrafficLight* four;
+		
 		Network* network;
 		int portNumber;
 		int sock;
 		double waterLevel;
 		bool sluiceStatus;
+		std::string sluiceState;
 };
 
 #endif
