@@ -1,6 +1,7 @@
 #ifndef ISENSORWATERLEVEL_H
 #define ISENSORWATERLEVEL_H
 
+
 class ISensorWaterLevel
 {
     public:

@@ -2,7 +2,7 @@
 #define SLUICE_H
 
 #include "IDoor.h"
-#include "Network.h"
+#include "INetwork.h"
 #include "ITrafficLight.h"
 #include "ISensorWaterLevel.h"
 #include "SluiceControl.h"
@@ -19,7 +19,7 @@ class Sluice
 		void SetSluiceState(std::string);
 		int StartSluicing();
 		void SendCommand(std::string SendCommand);
-		ISensorWaterLevel* sensorWaterLevel;
+		
 		
 	private:
 		IDoor* highWaterDoor;
@@ -28,8 +28,8 @@ class Sluice
 		ITrafficLight* two;
 		ITrafficLight* three;
 		ITrafficLight* four;
-		
-		Network* network;
+		INetwork* network;
+		ISensorWaterLevel* sensorWaterLevel;
 		int portNumber;
 		int sock;
 		double waterLevel;

@@ -3,6 +3,7 @@
 
 #include "IDoor.h"
 #include "IValve.h"
+#include "INetwork.h"
 #include <vector>
 #include <string>
 

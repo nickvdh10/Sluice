@@ -9,12 +9,13 @@ Sluice::Sluice(int portNumber)
 ,sluiceStatus(false)
 ,sluiceState("Idle")
 {
-    network = new Network();
-    sock = network->CreateConnection(standardIp, portNumber);
+    sensorWaterLevel = new ISensorWaterLevel();
+    network = new INetwork();
+    //sock = network->CreateConnection(standardIp, portNumber); //werkt zo niet..
 }
 Sluice::~Sluice()
 {
-	delete network;
+	//delete network;
 }
 
 double Sluice::GetWaterLevel() const
@@ -44,7 +45,7 @@ int Sluice::StartSluicing()
 {
     SetSluiceState(""); //sluice state when starting the sluice
     //process of the sluicing
-    std::cout << "starting sluicing";
+    std::cout << "starting sluicing" << std::endl;
     //check waterlevel 
     //waterLevel = sensorWaterLevel->GetWaterLevelSluice();
     
@@ -81,6 +82,7 @@ int Sluice::StartSluicing()
 }
 void Sluice::SendCommand(std::string command)
 {
-    network->SendMessage(sock, command);
-    network->ReceiveMessage(sock);
+    command = "";
+    /*network->SendMessage(sock, command);
+    network->ReceiveMessage(sock);*/
 }
