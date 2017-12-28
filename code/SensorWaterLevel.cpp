@@ -1,7 +1,14 @@
 #include "SensorWaterLevel.h"
+#include "Network.h"
 
 SensorWaterLevel::SensorWaterLevel()
 {
+}
+
+
+std::string SensorWaterLevel::CheckCurrentWaterLevel()
+{
+	return "GetWaterLevel;";
 }
 
 double SensorWaterLevel::GetWaterLevelSluice()
@@ -18,3 +25,4 @@ double SensorWaterLevel::GetWaterLevelHigh()
 {
 	return waterLevelHigh;
 }
+

@@ -11,16 +11,17 @@
 class Door: public IDoor
 {
 	public:
-		Door();
+		Door(std::string side);
 		~Door();
 		bool GetDoorStatus();
-		void OpenDoor();
-		void CloseDoor();
-		std::string CreateDoorMessage(std::string side, std::string action, bool get);
+		std::string OpenDoor();
+		std::string CloseDoor();
+		std::string CreateDoorMessage(std::string action, bool get);
 	private:
 		std::vector<Valve> valves;
 		bool doorStatus;
 		std::string motorType;
+		std::string side;
 };
 
 #endif

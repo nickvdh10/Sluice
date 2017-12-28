@@ -1,8 +1,10 @@
 #include "Door.h"
+#include <iostream>
 
-Door::Door()
-:doorStatus(true)
+Door::Door(std::string side)
+:doorStatus(false)
 ,motorType("")
+,side(side)
 {
 	//TODO: initialize vector with 3 valves
 	for (int i = 0; i < 3; i++)
@@ -14,7 +16,6 @@ Door::Door()
 
 Door::~Door()
 {
-	
 }
 
 bool Door::GetDoorStatus()
@@ -22,17 +23,28 @@ bool Door::GetDoorStatus()
 	return doorStatus;
 }
 
-void Door::OpenDoor()
+std::string Door::OpenDoor()
 {
-	doorStatus = true;
+	if(doorStatus == false)
+	{
+		doorStatus = true;
+		std::string messageToSend = CreateDoorMessage("open", false);
+		return messageToSend;
+	}
+	else
+	{
+		std::cout << "door already open" << std::endl;
+		return "";
+	}
 }
 
-void Door::CloseDoor()
+std::string Door::CloseDoor()
 {
-    doorStatus = false;
+	doorStatus = false;
+	return "";
 }
 
-std::string Door::CreateDoorMessage(std::string side, std::string action, bool get)
+std::string Door::CreateDoorMessage(std::string action, bool get)
 {
 	if (!side.compare("Left") || !side.compare("Right"))
 	{
