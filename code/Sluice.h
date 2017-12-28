@@ -2,7 +2,7 @@
 #define SLUICE_H
 
 #include "IDoor.h"
-#include "INetwork.h"
+#include "Network.h"
 #include "ITrafficLight.h"
 #include "ISensorWaterLevel.h"
 #include "SluiceControl.h"
@@ -22,14 +22,14 @@ class Sluice
 		
 		
 	private:
-		IDoor* highWaterDoor;
-		IDoor* lowWaterDoor;
-		ITrafficLight* one;
-		ITrafficLight* two;
-		ITrafficLight* three;
-		ITrafficLight* four;
-		INetwork* network;
-		ISensorWaterLevel* sensorWaterLevel;
+		//IDoor* highWaterDoor;
+		//IDoor* lowWaterDoor;
+		//ITrafficLight* one;
+		//ITrafficLight* two;
+		//ITrafficLight* three;
+		//ITrafficLight* four;
+		//INetwork* network;
+		//ISensorWaterLevel* sensorWaterLevel;
 		int portNumber;
 		int sock;
 		double waterLevel;

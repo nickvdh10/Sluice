@@ -5,6 +5,16 @@ Door::Door()
 ,motorType("")
 {
 	//TODO: initialize vector with 3 valves
+	for (int i = 0; i < 3; i++)
+	{
+		Valve v;
+		valves.push_back(v);
+	}
+}
+
+Door::~Door()
+{
+	
 }
 
 bool Door::GetDoorStatus()
@@ -24,11 +34,10 @@ void Door::CloseDoor()
 
 std::string Door::CreateDoorMessage(std::string side, std::string action, bool get)
 {
-	/*if (!side.comapre("Left") || !side.comapre("Right"))
+	if (!side.compare("Left") || !side.compare("Right"))
 	{
 		if (!action.compare("open") || !action.compare("close") || !action.compare("stop"))
 		{
-
 			if (get)
 			{
 				return "GetDoor" + side + ":" + action + ";";
@@ -36,9 +45,8 @@ std::string Door::CreateDoorMessage(std::string side, std::string action, bool g
 			// Set asked
 			return "SetDoor" + side + ":" + action + ";";
 		}
-	}*/
-	get = !get;
-	return side + action;
+	}
+	return "";
 }
 
 

@@ -2,9 +2,9 @@
 #define NETWORK_H
 
 #include <string>
-#include "INetwork.h"
-
-class Network: public INetwork
+//#include "INetwork.h"
+//: public INetwork
+class Network
 {
 	public:
 		Network();

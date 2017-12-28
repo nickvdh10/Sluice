@@ -2,7 +2,7 @@
 #define VALVE_H
 
 #include "IValve.h"
-#include "INetwork.h"
+#include "Network.h"
 
 class Valve : public IValve
 {

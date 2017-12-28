@@ -3,7 +3,8 @@
 
 #include "IDoor.h"
 #include "IValve.h"
-#include "INetwork.h"
+#include "Valve.h"
+#include "Network.h"
 #include <vector>
 #include <string>
 
@@ -11,13 +12,13 @@ class Door: public IDoor
 {
 	public:
 		Door();
-		~Door(){}
+		~Door();
 		bool GetDoorStatus();
 		void OpenDoor();
 		void CloseDoor();
 		std::string CreateDoorMessage(std::string side, std::string action, bool get);
 	private:
-		std::vector<IValve> valves;
+		std::vector<Valve> valves;
 		bool doorStatus;
 		std::string motorType;
 };

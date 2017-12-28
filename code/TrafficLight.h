@@ -2,7 +2,7 @@
 #define TRAFFICLIGHT_H
 
 #include "ITrafficLight.h"
-#include "INetwork.h"
+#include "Network.h"
 
 class TrafficLight: public ITrafficLight
 {

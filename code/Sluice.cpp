@@ -9,8 +9,8 @@ Sluice::Sluice(int portNumber)
 ,sluiceStatus(false)
 ,sluiceState("Idle")
 {
-    sensorWaterLevel = new ISensorWaterLevel();
-    network = new INetwork();
+    //sensorWaterLevel = new ISensorWaterLevel();
+    //network = new INetwork();
     //sock = network->CreateConnection(standardIp, portNumber); //werkt zo niet..
 }
 Sluice::~Sluice()
