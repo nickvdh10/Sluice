@@ -2,7 +2,6 @@
 #define DOOR_H
 
 #include "IDoor.h"
-#include "IValve.h"
 #include "Valve.h"
 #include "Network.h"
 #include <vector>
@@ -14,11 +13,14 @@ class Door: public IDoor
 		Door(std::string side);
 		~Door();
 		bool GetDoorStatus();
+		std::string GetDoorSide() const;
 		std::string OpenDoor();
 		std::string CloseDoor();
 		std::string CreateDoorMessage(std::string action, bool get);
+		std::vector<Valve*> valves;
+
 	private:
-		std::vector<Valve> valves;
+		
 		bool doorStatus;
 		std::string motorType;
 		std::string side;

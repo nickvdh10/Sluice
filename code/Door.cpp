@@ -9,8 +9,12 @@ Door::Door(std::string side)
 	//TODO: initialize vector with 3 valves
 	for (int i = 0; i < 3; i++)
 	{
-		Valve v;
-		valves.push_back(v);
+		valves.push_back(new Valve(i+1, side));
+		
+	}
+	for (int i = 0; i < 3; i++)//test loop
+	{
+		std::cout << valves[i]->GetValveLevel() << std::endl << valves[i]->GetValveSide() << std::endl;
 	}
 }
 
@@ -21,6 +25,11 @@ Door::~Door()
 bool Door::GetDoorStatus()
 {
 	return doorStatus;
+}
+
+std::string Door::GetDoorSide() const
+{
+	return side;
 }
 
 std::string Door::OpenDoor()
@@ -40,8 +49,19 @@ std::string Door::OpenDoor()
 
 std::string Door::CloseDoor()
 {
-	doorStatus = false;
-	return "";
+	if(doorStatus == true)
+	{
+		doorStatus = false;
+		std::string messageToSend = CreateDoorMessage("close", false);
+		return messageToSend;
+	}
+	else
+	{
+		std::cout << "door already closed" << std::endl;
+		return "";
+	}
+	
+	
 }
 
 std::string Door::CreateDoorMessage(std::string action, bool get)

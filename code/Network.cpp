@@ -69,7 +69,7 @@ std::string Network::ReceiveMessage(int sock)
     }
     else
     {
-        std::cout << "message received: " << receiveString << std::endl;
+        //std::cout << "message received: " << receiveString << std::endl;
         return receiveString;
     }
 }

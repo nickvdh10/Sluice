@@ -44,6 +44,50 @@ void Sluice::SetSluiceState(std::string state)
 {
     sluiceState = state;
 }
+std::string Sluice::ChangeLevel(Door* door)
+{
+    std::string compareStr;
+    if(door->GetDoorSide() == "Right")
+    {
+        compareStr = "aboveValve2;";
+    }
+    else
+    {
+        compareStr = "low;";
+    }
+
+    //open valve1
+    std::cout << door->valves[0]->OpenValve();
+    SendCommand(door->valves[0]->OpenValve());
+    while(SendCommand(sensorWaterLevel->CheckCurrentWaterLevel()) != compareStr)
+    {
+
+    }
+    if(door->GetDoorSide() == "Right")
+    {    
+        //open valve2
+        SendCommand(door->valves[1]->OpenValve());
+        while(SendCommand(sensorWaterLevel->CheckCurrentWaterLevel()) != "aboveValve3;")
+        {
+    
+        }
+        //open valve 3
+        SendCommand(door->valves[2]->OpenValve());
+        while(SendCommand(sensorWaterLevel->CheckCurrentWaterLevel()) != "high;")
+        {
+            
+        }
+    }
+    std::cout << "waterlevel is on desired level\n";
+    //close all valves
+    SendCommand(door->valves[0]->CloseValve());
+    SendCommand(door->valves[1]->CloseValve());
+    SendCommand(door->valves[2]->CloseValve());
+
+    return "ack;";
+}
+
+
 int Sluice::StartSluicing()
 {
     SetSluiceState(""); //sluice state when starting the sluice
@@ -54,28 +98,37 @@ int Sluice::StartSluicing()
     
     if(waterLevel == "low;")
     {
-        SendCommand(lowWaterDoor->OpenDoor());
         
-        /*//wait for release
+        
+        //wait for release
          SetSluiceState(""); //sluice state when dropping water
          //omhoogschutten
              //close low doors
+             if(lowWaterDoor->GetDoorStatus())
+             {
+                 lowWaterDoor->CloseDoor();
+             }
+
              //rise water
-             //open High doors
+             ChangeLevel(highWaterDoor);
+             //open high Doors
+             SendCommand(highWaterDoor->OpenDoor());
              //wait for release
-             //when released back to idle*/
+             //when released back to idle
     }
     else if(waterLevel == "high;")
     {
-        SendCommand(highWaterDoor->OpenDoor());
-        /*//wait for release
+        
+        //wait for release
         SetSluiceState(""); //sluice state when rising water
         //omlaagschutten
             //close high doors
             //dropping water
+            ChangeLevel(lowWaterDoor);
             //open low doors
+            SendCommand(lowWaterDoor->OpenDoor());
             //wait for release
-            //when released back to idle*/
+            //when released back to idle
     }
     /*std::cout << "pres y for green light" << std::endl;
     char value;
