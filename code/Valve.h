@@ -10,18 +10,21 @@ class Valve : public IValve
 		Valve(int valveLevel, std::string side);
 		~Valve(){}
 		bool GetValveStatus();
-		char GetValveLevel();
+		int GetValveLevel();
 		std::string GetValveSide();
 		std::string OpenValve();
 		std::string CloseValve();
 		std::string CreateValveMessage(std::string action, bool get);
 		 //naar private ff public voor test
-
+		 // deze ^ en comment hieronder kenne weg denk fnie?
 	private:
-		char valveLevel; //naar private ff public voor test
+		int valveLevel; //naar private ff public voor test
 		std::string side;
 		bool valveStatus;
 		
+		// Empty copyconst and assignment operator since we don't want copies to be made (?)
+		Valve(const Valve&) { /* do nothing */ };
+		Valve& operator= (const Valve&) { return *this; };   
 };
 
 #endif

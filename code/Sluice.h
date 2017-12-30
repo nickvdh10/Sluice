@@ -4,6 +4,7 @@
 #include "Door.h"
 #include "Network.h"
 #include "ITrafficLight.h"
+#include "TrafficLight.h"
 #include "ISensorWaterLevel.h"
 #include "SensorWaterLevel.h"
 #include "SluiceControl.h"
@@ -26,10 +27,7 @@ class Sluice
 	private:
 		Door* highWaterDoor;
 		Door* lowWaterDoor;
-		//ITrafficLight* one;
-		//ITrafficLight* two;
-		//ITrafficLight* three;
-		//ITrafficLight* four;
+		std::vector<TrafficLight*> trafficLights;
 		Network* network;
 		SensorWaterLevel* sensorWaterLevel;
 		int portNumber;
@@ -37,6 +35,10 @@ class Sluice
 		std::string waterLevel;
 		bool sluiceStatus;
 		std::string sluiceState;
+		
+		// Empty copyconst and assignment operator since we don't want copies to be made (?)
+		Sluice(const Sluice&) { /* do nothing */ };
+		Sluice& operator= (const Sluice&) { return *this; };   
 };
 
 #endif

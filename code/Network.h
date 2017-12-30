@@ -15,5 +15,9 @@ class Network
 		std::string ReceiveMessage(int sock);
 	private:
 		int portNumber;
+		
+		// Empty copyconst and assignment operator since we don't want copies to be made (?)
+		Network(const Network&) { /* do nothing */ };
+		Network& operator= (const Network&) { return *this; };   
 };
 #endif

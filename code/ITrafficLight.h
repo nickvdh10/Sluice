@@ -4,7 +4,7 @@
 class ITrafficLight
 {
     public:
-        ~ITrafficLight();
+        ~ITrafficLight(){}
         void SetGreen();
         void SetRed();
     private:

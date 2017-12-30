@@ -16,14 +16,18 @@ class Door: public IDoor
 		std::string GetDoorSide() const;
 		std::string OpenDoor();
 		std::string CloseDoor();
+		std::vector<Valve*> GetValves();
 		std::string CreateDoorMessage(std::string action, bool get);
-		std::vector<Valve*> valves;
 
 	private:
-		
+		std::vector<Valve*> valves;
 		bool doorStatus;
 		std::string motorType;
 		std::string side;
+		
+		// Empty copyconst and assignment operator since we don't want copies to be made (?)
+		Door(const Door&) { /* do nothing */ };
+		Door& operator= (const Door&) { return *this; };   
 };
 
 #endif

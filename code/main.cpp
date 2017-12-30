@@ -35,7 +35,7 @@ int main()
                 break;
             case '5':
                 std::cout << "exit program" << std::endl;
-                return 0;
+                exit (0);
                 break;
             default:
                     std::cout << "wrong portNumber" << std::endl;
@@ -63,6 +63,7 @@ int main()
                     break;
                     case 'b':
                     //quit program
+                    exit (0);
                     break;
                     default:
                     std::cout << "wrong input" << std::endl;

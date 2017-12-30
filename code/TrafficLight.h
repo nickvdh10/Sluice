@@ -12,7 +12,12 @@ class TrafficLight: public ITrafficLight
         bool GetLightStatus();
         void SetGreen();
         void SetRed();
+        std::string CreateTrafficLightMessage(std::string action, bool get);
     private:
         bool lightStatus;
+        
+        // Empty copyconst and assignment operator since we don't want copies to be made (?)
+		TrafficLight(const TrafficLight&) { /* do nothing */ };
+		TrafficLight& operator= (const TrafficLight&) { return *this; };   
 };
 #endif

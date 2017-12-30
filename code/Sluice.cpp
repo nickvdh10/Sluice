@@ -14,11 +14,24 @@ Sluice::Sluice(int portNumber)
     sensorWaterLevel = new SensorWaterLevel();
     network = new Network();
     sock = network->CreateConnection(standardIp, portNumber);
+    for (int i = 0; i < 4; i++)
+	{
+		// Traffic lights standerd red light???
+		trafficLights.push_back(new TrafficLight(false));	
+	}
 }
 Sluice::~Sluice()
 {
+	// delete memory on the heap
     delete sensorWaterLevel;
     delete network;
+    delete lowWaterDoor;
+    delete highWaterDoor;
+    for (unsigned int i = 0; i < trafficLights.size(); i++)
+    {
+		delete trafficLights[i];
+		trafficLights[i] = NULL;
+	}
 }
 
 std::string Sluice::GetWaterLevel() const
@@ -57,8 +70,8 @@ std::string Sluice::ChangeLevel(Door* door)
     }
 
     //open valve1
-    std::cout << door->valves[0]->OpenValve();
-    SendCommand(door->valves[0]->OpenValve());
+    SendCommand(door->GetValves()[0]->OpenValve());
+    
     while(SendCommand(sensorWaterLevel->CheckCurrentWaterLevel()) != compareStr)
     {
 
@@ -66,13 +79,13 @@ std::string Sluice::ChangeLevel(Door* door)
     if(door->GetDoorSide() == "Right")
     {    
         //open valve2
-        SendCommand(door->valves[1]->OpenValve());
+        SendCommand(door->GetValves()[1]->OpenValve());
         while(SendCommand(sensorWaterLevel->CheckCurrentWaterLevel()) != "aboveValve3;")
         {
     
         }
         //open valve 3
-        SendCommand(door->valves[2]->OpenValve());
+        SendCommand(door->GetValves()[2]->OpenValve());
         while(SendCommand(sensorWaterLevel->CheckCurrentWaterLevel()) != "high;")
         {
             
@@ -80,9 +93,9 @@ std::string Sluice::ChangeLevel(Door* door)
     }
     std::cout << "waterlevel is on desired level\n";
     //close all valves
-    SendCommand(door->valves[0]->CloseValve());
-    SendCommand(door->valves[1]->CloseValve());
-    SendCommand(door->valves[2]->CloseValve());
+    SendCommand(door->GetValves()[0]->CloseValve());
+    SendCommand(door->GetValves()[1]->CloseValve());
+    SendCommand(door->GetValves()[2]->CloseValve());
 
     return "ack;";
 }

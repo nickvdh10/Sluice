@@ -17,5 +17,9 @@ class SensorWaterLevel: public ISensorWaterLevel
         double waterLevelSluice;
         double waterLevelLow;
         double waterLevelHigh;
+        
+        // Empty copyconst and assignment operator since we don't want copies to be made (?)
+		SensorWaterLevel(const SensorWaterLevel&) { /* do nothing */ };
+		SensorWaterLevel& operator= (const SensorWaterLevel&) { return *this; };   
 };
 #endif
