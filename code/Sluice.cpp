@@ -96,7 +96,8 @@ std::string Sluice::ChangeLevel(Door* door)
     SendCommand(door->GetValves()[0]->CloseValve());
     SendCommand(door->GetValves()[1]->CloseValve());
     SendCommand(door->GetValves()[2]->CloseValve());
-
+    std::cout << "Valves closed\n";
+    
     return "ack;";
 }
 
@@ -112,34 +113,39 @@ int Sluice::StartSluicing()
     if(waterLevel == "low;")
     {
         
-        
+        std::cout << "dropping water" << std::endl;
         //wait for release
          SetSluiceState(""); //sluice state when dropping water
          //omhoogschutten
              //close low doors
-             if(lowWaterDoor->GetDoorStatus())
-             {
-                 lowWaterDoor->CloseDoor();
-             }
-
+             SendCommand(lowWaterDoor->CloseDoor()); 
+             while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorClosed")
+             {}
              //rise water
              ChangeLevel(highWaterDoor);
              //open high Doors
              SendCommand(highWaterDoor->OpenDoor());
+             while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen")
+             {}
              //wait for release
              //when released back to idle
     }
     else if(waterLevel == "high;")
     {
-        
+        std::cout << "rising water" << std::endl;
         //wait for release
         SetSluiceState(""); //sluice state when rising water
         //omlaagschutten
             //close high doors
+            SendCommand(highWaterDoor->CloseDoor());
             //dropping water
+            while(SendCommand(highWaterDoor->CheckDoorState()) != "doorClosed")
+            {}
             ChangeLevel(lowWaterDoor);
             //open low doors
             SendCommand(lowWaterDoor->OpenDoor());
+            while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen")
+            {}
             //wait for release
             //when released back to idle
     }

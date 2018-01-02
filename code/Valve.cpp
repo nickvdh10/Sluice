@@ -39,7 +39,7 @@ std::string Valve::OpenValve()
 
 std::string Valve::CloseValve()
 {
-	if(valveStatus == false)
+	if(valveStatus == true)
 	{
 		valveStatus = false;
 		std::string messageToSend = CreateValveMessage("close", false);

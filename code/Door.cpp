@@ -63,8 +63,10 @@ std::string Door::CloseDoor()
 		std::cout << "door already closed" << std::endl;
 		return "";
 	}
-	
-	
+}
+std::string Door::CheckDoorState()
+{
+	return CreateDoorMessage("", true);
 }
 
 std::vector<Valve*> Door::GetValves()
@@ -78,7 +80,7 @@ std::string Door::CreateDoorMessage(std::string action, bool get)
 	{
 		if (get)
 		{
-			return "GetDoor" + side + ":" + action + ";";
+			return "GetDoor" + side + ";";
 		}
 		if (!action.compare("open") || !action.compare("close") || !action.compare("stop"))
 		{
