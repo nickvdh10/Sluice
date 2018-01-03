@@ -24,7 +24,10 @@ Door::~Door()
 		valves[i] = NULL;
 	}
 }
-
+void Door::SetDoorStatus(bool status)
+{
+	doorStatus = status;
+}
 bool Door::GetDoorStatus()
 {
 	return doorStatus;

@@ -13,6 +13,7 @@ class Door: public IDoor
 		Door(std::string side);
 		~Door();
 		bool GetDoorStatus();
+		void SetDoorStatus(bool status);
 		std::string GetDoorSide() const;
 		std::string OpenDoor();
 		std::string CloseDoor();
