@@ -16,7 +16,6 @@ Sluice::Sluice(int portNumber)
     sock = network->CreateConnection(standardIp, portNumber);
     for (int i = 0; i < 4; i++)
 	{
-		// Traffic lights standerd red light???
 		trafficLights.push_back(new TrafficLight(false));	
 	}
 }
@@ -107,7 +106,7 @@ int Sluice::StartSluicing()
     SetSluiceState(""); //sluice state when starting the sluice
     //process of the sluicing
     std::cout << "starting sluicing" << std::endl;
-    
+    char value;
     waterLevel = SendCommand(sensorWaterLevel->CheckCurrentWaterLevel());
     
     if(waterLevel == "low;")
@@ -119,14 +118,26 @@ int Sluice::StartSluicing()
          //omhoogschutten
              //close low doors
              SendCommand(lowWaterDoor->CloseDoor()); 
-             while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorClosed")
-             {}
+             while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorClosed;")
+             {
+			 }
              //rise water
              ChangeLevel(highWaterDoor);
              //open high Doors
              SendCommand(highWaterDoor->OpenDoor());
-             while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen")
-             {}
+             SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen;";
+             std::cout << "Press g to set trafficlight to green" << std::endl;
+             std::cin >> value;
+             if (value == 'g')
+             {
+				trafficLights[4]->SetGreen();
+				SendCommand("SetTrafficLight4Red:off;"); 
+				SendCommand("SetTrafficLight4Green:on;"); 
+			 }
+			 trafficLights[4]->SetRed();
+			 SendCommand("SetTrafficLight4Red:on;"); 
+			 SendCommand("SetTrafficLight4Green:off;"); 
+			 SendCommand(highWaterDoor->CloseDoor());
              //wait for release
              //when released back to idle
     }
@@ -139,13 +150,22 @@ int Sluice::StartSluicing()
             //close high doors
             SendCommand(highWaterDoor->CloseDoor());
             //dropping water
-            while(SendCommand(highWaterDoor->CheckDoorState()) != "doorClosed")
+            while(SendCommand(highWaterDoor->CheckDoorState()) != "doorClosed;")
             {}
             ChangeLevel(lowWaterDoor);
             //open low doors
             SendCommand(lowWaterDoor->OpenDoor());
-            while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen")
-            {}
+            SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen;";
+             std::cout << "Press g to set trafficlight to green" << std::endl;
+             std::cin >> value;
+             if (value == 'g')
+             {
+				SendCommand("SetTrafficLight4Red:on;"); 
+				SendCommand("SetTrafficLight4Green:off;"); 
+			 }
+			 SendCommand("SetTrafficLight4Red:on;"); 
+			 SendCommand("SetTrafficLight4Green:off;"); 
+			 SendCommand(lowWaterDoor->CloseDoor());
             //wait for release
             //when released back to idle
     }

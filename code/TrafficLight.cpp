@@ -12,17 +12,19 @@ bool TrafficLight::GetLightStatus()
 	return lightStatus;
 }
 
-void TrafficLight::SetGreen()
+std::string TrafficLight::SetGreen()
 {
 	lightStatus = true;
+	return "";
 }
 
-void TrafficLight::SetRed()
+std::string TrafficLight::SetRed()
 {
 	lightStatus = false;
+	return "";
 }
 
-std::string TrafficLight::CreateTrafficLightMessage(std::string action, bool get)
+std::string TrafficLight::CreateTrafficLightMessage(std::string action, int number, bool get)
 {
 	//SetTrafficLight[1..4][Red|Green]:[on|off]
 	//GetTrafficLight[1..4][Red|Green]
@@ -32,14 +34,14 @@ std::string TrafficLight::CreateTrafficLightMessage(std::string action, bool get
 	if (get)
 	{
 
-		ss << "SetTrafficLight" << colour << colour << ";";
+		ss << "SetTrafficLight" << number << colour << ";";
 		return ss.str();
 	}
 	
 	if (!action.compare("on") || !action.compare("off"))
 	{
 		// Set asked
-		ss << "SetTrafficLight" << colour << colour << ";";
+		ss << "SetTrafficLight" << number << colour << ";";
 		std::cout << ss.str() << std::endl;
 		return ss.str();
 	}

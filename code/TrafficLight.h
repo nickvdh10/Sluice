@@ -10,9 +10,9 @@ class TrafficLight: public ITrafficLight
         TrafficLight(bool lightStatus);
         ~TrafficLight(){}
         bool GetLightStatus();
-        void SetGreen();
-        void SetRed();
-        std::string CreateTrafficLightMessage(std::string action, bool get);
+        std::string SetGreen();
+        std::string SetRed();
+        std::string CreateTrafficLightMessage(std::string action, int number, bool get);
     private:
         bool lightStatus;
         
