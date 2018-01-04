@@ -16,7 +16,7 @@ Sluice::Sluice(int portNumber)
     sock = network->CreateConnection(standardIp, portNumber);
     for (int i = 0; i < 4; i++)
 	{
-		trafficLights.push_back(new TrafficLight(false));	
+		trafficLights.push_back(new TrafficLight(false, i+1));	
 	}
 }
 Sluice::~Sluice()

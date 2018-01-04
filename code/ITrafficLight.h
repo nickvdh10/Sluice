@@ -5,9 +5,15 @@ class ITrafficLight
 {
     public:
         ~ITrafficLight(){}
-        void SetGreen();
-        void SetRed();
+        bool GetLightStatus();
+        std::string SetGreenOn();
+        std::string SetGreenOff();
+        std::string SetRedOn();
+        std::string SetRedOff();
+        std::string CreateTrafficLightMessage(std::string action, std::string colour, int number, bool get);
+
     private:
+        int number;
         bool LightStatus;
 };
 #endif

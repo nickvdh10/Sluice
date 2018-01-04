@@ -6,8 +6,11 @@
 class DoorWithDifferentEngine : public Door
 {
 	public:
-	DoorWithDifferentEngine(std::string side);
+	DoorWithDifferentEngine(std::string side, bool hasDifrentEngine);
 	//~DoorWithDifferentEngine(){}
+	bool GetHasDifrentEngine();
+	private:
+		bool hasDifrentEngine;
 };
 
 #endif
