@@ -1,6 +1,8 @@
 #ifndef ITRAFFICLIGHT_H
 #define ITRAFFICLIGHT_H
 
+#include <iostream>
+
 class ITrafficLight
 {
     public:

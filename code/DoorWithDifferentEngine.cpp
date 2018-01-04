@@ -1,12 +1,6 @@
 #include "DoorWithDifferentEngine.h"
 
-DoorWithDifferentEngine::DoorWithDifferentEngine(std::string side, bool hasDifrentEngine)
+DoorWithDifferentEngine::DoorWithDifferentEngine(std::string side)
 :Door(side)
-,hasDifrentEngine(hasDifrentEngine)
 {
-}
-
-bool DoorWithDifferentEngine::GetHasDifrentEngine()
-{
-    return hasDifrentEngine;
 }

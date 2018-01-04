@@ -156,24 +156,41 @@ int Sluice::StartSluicing()
         //vrijgeven voor uitvaren
         std::cout << "Press g to give free to go out of the sluice" << std::endl;
         std::cin >> value;
+        int trafficlightNumber;
+        if (highWaterDoor->GetDoorSide() == "Right")
+		{
+			trafficlightNumber = 4;
+		}
+		else{
+			trafficlightNumber = 2;
+		}
+        
         if (value == 'g')
         { 
+			SendCommand(trafficLights[trafficlightNumber - 1]->SetRedOff());
+			SendCommand(trafficLights[trafficlightNumber - 1]->SetGreenOn());
+			SendCommand(trafficLights[trafficlightNumber - 2]->SetRedOn());
+			SendCommand(trafficLights[trafficlightNumber - 2]->SetGreenOff());
             //[1][2][3][4] in simulator
             //[0][1][2][3] in vector
             //[R][R][G][R] 
-			SendCommand("SetTrafficLight3Red:off;"); 
-            SendCommand("SetTrafficLight3Green:on;");
-            SendCommand("SetTrafficLight4Red:on;"); 
-            SendCommand("SetTrafficLight4Green:off;");  
+			//SendCommand("SetTrafficLight3Red:off;"); 
+            //SendCommand("SetTrafficLight3Green:on;");
+            //SendCommand("SetTrafficLight4Red:on;"); 
+            //SendCommand("SetTrafficLight4Green:off;");  
         }
         std::cout << "Press g to give free to go in to the sluice" << std::endl;
         std::cin >> value;
         if (value == 'g')
         {
-            SendCommand("SetTrafficLight3Red:on;"); 
-            SendCommand("SetTrafficLight3Green:off;");
-            SendCommand("SetTrafficLight4Red:off;"); 
-            SendCommand("SetTrafficLight4Green:on;");  
+			SendCommand(trafficLights[trafficlightNumber - 1]->SetRedOn());
+			SendCommand(trafficLights[trafficlightNumber - 1]->SetGreenOff());
+			SendCommand(trafficLights[trafficlightNumber - 2]->SetRedOff());
+			SendCommand(trafficLights[trafficlightNumber - 2]->SetGreenOn());
+            //SendCommand("SetTrafficLight3Red:on;"); 
+            //SendCommand("SetTrafficLight3Green:off;");
+            //SendCommand("SetTrafficLight4Red:off;"); 
+            //SendCommand("SetTrafficLight4Green:on;");  
         }
 		//SendCommand(highWaterDoor->CloseDoor());
         //wait for release

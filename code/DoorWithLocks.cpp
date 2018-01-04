@@ -1,13 +1,7 @@
 #include "DoorWithLocks.h"
 
-DoorWithLocks::DoorWithLocks(std::string side, bool hasLockers)
+DoorWithLocks::DoorWithLocks(std::string side)
 :Door(side)
-,hasLockers(hasLockers)
 {
 	
-}
-
-bool DoorWithLocks::GetHasLockers()
-{
-    return hasLockers;
 }

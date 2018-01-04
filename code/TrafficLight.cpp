@@ -46,7 +46,6 @@ std::string TrafficLight::CreateTrafficLightMessage(std::string action, std::str
 	//std::string colour = lightStatus ? "Green" : "Red";
 	if (get)
 	{
-
 		ss << "SetTrafficLight" << number << colour << ";";
 		return ss.str();
 	}
@@ -54,7 +53,7 @@ std::string TrafficLight::CreateTrafficLightMessage(std::string action, std::str
 	if (!action.compare("on") || !action.compare("off"))
 	{
 		// Set asked
-		ss << "SetTrafficLight" << number << colour << ";";
+		ss << "SetTrafficLight" << number << colour << ":" << action << ";";
 		std::cout << ss.str() << std::endl;
 		return ss.str();
 	}

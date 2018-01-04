@@ -6,11 +6,9 @@
 class DoorWithLocks : public Door
 {
 	public:
-	DoorWithLocks(std::string side, bool hasLockers);
+	DoorWithLocks(std::string side);
 	//~DoorWithLocks(){}
-	bool GetHasLockers();
-	private:
-		bool hasLockers;
+
 };
 
 #endif
