@@ -7,15 +7,18 @@
 class TrafficLight: public ITrafficLight
 {
     public:
-        TrafficLight(bool lightStatus, int number);
+        TrafficLight(Network* network, bool lightStatus, int number);
         ~TrafficLight(){}
         bool GetLightStatus();
-        std::string SetGreenOn();
-        std::string SetGreenOff();
-        std::string SetRedOn();
-        std::string SetRedOff();
+        std::string SetGreenOn(); //Remove later
+        std::string SetGreenOff(); //Remove later
+        std::string SetRedOn(); //Remove later
+        std::string SetRedOff(); //Remove later
+        bool SetGreen();
+        bool SetRed();
         std::string CreateTrafficLightMessage(std::string action, std::string colour, int number, bool get);
     private:
+		Network* network;
         bool lightStatus;
         int number;
         // Empty copyconst and assignment operator since we don't want copies to be made (?)

@@ -29,7 +29,7 @@ Sluice::Sluice(int portNumber)
     sock = network->CreateConnection(standardIp, portNumber);
     for (int i = 0; i < 4; i++)
 	{
-		trafficLights.push_back(new TrafficLight(false, i+1));	
+		trafficLights.push_back(new TrafficLight(network, false, i+1));	
 	}
 }
 Sluice::~Sluice()
@@ -204,8 +204,8 @@ void Sluice::Sluicing(Door* door1, Door* door2)
         int trafficlightNumber2 = 1;
         if (door1->GetDoorSide() == "Right")
 		{
-			trafficlightNumber1 = 4;
-			trafficlightNumber2 = 3;
+			trafficlightNumber1 = 3;
+			trafficlightNumber2 = 4;
 		}
 
         if (value == 'g')

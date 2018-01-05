@@ -73,3 +73,8 @@ std::string Network::ReceiveMessage(int sock)
         return receiveString;
     }
 }
+
+int Network::GetSock() const
+{
+	return sock;
+}

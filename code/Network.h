@@ -13,9 +13,10 @@ class Network
 		void CloseConnection(int sock);
 		void SendMessage(int sock, std::string message);
 		std::string ReceiveMessage(int sock);
+		int GetSock() const;
 	private:
 		int portNumber;
-		
+		int sock;
 		// Empty copyconst and assignment operator since we don't want copies to be made (?)
 		Network(const Network&) { /* do nothing */ };
 		Network& operator= (const Network&) { return *this; };   
