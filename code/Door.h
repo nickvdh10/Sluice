@@ -11,15 +11,15 @@ class Door: public IDoor
 {
 	public:
 		Door(std::string side);
-		~Door();
+		virtual ~Door();
 		bool GetDoorStatus();
 		void SetDoorStatus(bool status);
 		std::string GetDoorSide() const;
-		std::string OpenDoor();
-		std::string CloseDoor();
-		std::string CheckDoorState();
+		void OpenDoor();
+		void CloseDoor();
+		std::vector<std::string> CheckDoorState();
 		std::vector<Valve*> GetValves();
-		std::string CreateDoorMessage(std::string action, bool get);
+		virtual std::vector<std::string> CreateDoorMessage(std::string action, bool get);
 
 	private:
 		std::vector<Valve*> valves;
@@ -28,8 +28,8 @@ class Door: public IDoor
 		std::string side;
 		
 		// Empty copyconst and assignment operator since we don't want copies to be made (?)
-		Door(const Door&) { /* do nothing */ };
-		Door& operator= (const Door&) { return *this; };   
+		//Door(const Door&) { /* do nothing */ };
+		//Door& operator= (const Door&) { return *this; };   
 };
 
 #endif

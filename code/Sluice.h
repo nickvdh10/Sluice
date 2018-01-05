@@ -8,6 +8,11 @@
 #include "ISensorWaterLevel.h"
 #include "SensorWaterLevel.h"
 #include "SluiceControl.h"
+#include "DoorWithDifferentEngine.h"
+#include "DoorWithLock.h"
+#include "IDoor.h"
+#include "Door.h"
+
 
 class Sluice
 {
@@ -22,6 +27,7 @@ class Sluice
 		void CloseAllDoors(Door* door1, Door* door2);
 		std::string ChangeLevel(Door* door);
 		int StartSluicing();
+		void Sluicing(Door* door1, Door* door2);
 		std::string SendCommand(std::string SendCommand);
 		
 		

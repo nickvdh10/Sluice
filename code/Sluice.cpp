@@ -9,8 +9,21 @@ Sluice::Sluice(int portNumber)
 ,sluiceStatus(false)
 ,sluiceState("Idle")
 {
-    lowWaterDoor = new Door("Left");
-    highWaterDoor = new Door("Right");
+	switch(portNumber)
+	{
+		case 5557:
+			lowWaterDoor = new DoorWithLock("Left");
+			highWaterDoor = new DoorWithLock("Right");
+			break;
+		case 5558:
+			lowWaterDoor = new DoorWithDifferentEngine("Left");
+			highWaterDoor = new DoorWithDifferentEngine("Right");
+			break;
+		default:
+			lowWaterDoor = new Door("Left");
+			highWaterDoor = new Door("Right");
+			break;
+	}
     sensorWaterLevel = new SensorWaterLevel();
     network = new Network();
     sock = network->CreateConnection(standardIp, portNumber);
@@ -59,21 +72,33 @@ void Sluice::SetSluiceState(std::string state)
 
 void Sluice::CloseAllDoors(Door* door1, Door* door2)
 {
-    if(SendCommand(door1->CheckDoorState()) != "doorClosed;")
+	std::vector<std::string> doorCommands;
+	doorCommands = door1->CheckDoorState();
+    if(SendCommand(doorCommands[0]) != "doorClosed;")
     {
         door1->SetDoorStatus(true);
-        SendCommand(door1->CloseDoor()); 
-        while(SendCommand(door1->CheckDoorState()) != "doorClosed;")
+        door1->CloseDoor();
+        std::string action = door1->GetDoorStatus() ? "open" : "close";
+        doorCommands = door1->CreateDoorMessage(action, false);
+        for(size_t i = 0; i < doorCommands.size(); i++)
         {
-        }
+			SendCommand(doorCommands[i]);
+			std::cout << doorCommands[i] << std::endl;
+		}
+		//TODO: while loop
     }
-    if(SendCommand(door2->CheckDoorState()) != "doorClosed;")
+    doorCommands = door2->CheckDoorState();
+    if(SendCommand(doorCommands[0]) != "doorClosed;")
     {
         door2->SetDoorStatus(true);
-        SendCommand(door2->CloseDoor()); 
-        while(SendCommand(door2->CheckDoorState()) != "doorClosed;")
+        door2->CloseDoor();
+        std::string action = door2->GetDoorStatus() ? "open" : "close";
+        doorCommands = door2->CreateDoorMessage(action, false);
+        for(size_t i = 0; i < doorCommands.size(); i++)
         {
-        }
+			SendCommand(doorCommands[i]);
+			std::cout << doorCommands[i] << std::endl;
+		}
     }
     
 }
@@ -88,7 +113,7 @@ std::string Sluice::ChangeLevel(Door* door)
     {
         compareStr = "low;";
     }
-
+	
     //open valve1
     SendCommand(door->GetValves()[0]->OpenValve());
     
@@ -124,121 +149,86 @@ std::string Sluice::ChangeLevel(Door* door)
 
 int Sluice::StartSluicing()
 {
-    SendCommand("SetTrafficLight1Red:on;"); 
-    SendCommand("SetTrafficLight1Green:off;");
-    SendCommand("SetTrafficLight2Red:on;"); 
-    SendCommand("SetTrafficLight2Green:off;"); 
-    SendCommand("SetTrafficLight3Red:on;"); 
-    SendCommand("SetTrafficLight3Green:off;");
-    SendCommand("SetTrafficLight4Red:on;"); 
-    SendCommand("SetTrafficLight4Green:off;");  
+	for (size_t i = 0; i < trafficLights.size(); i++)
+	{
+		SendCommand(trafficLights[i]->SetRedOn());
+		SendCommand(trafficLights[i]->SetGreenOff());
+	}  
     SetSluiceState(""); //sluice state when starting the sluice
     //process of the sluicing
     std::cout << "starting sluicing" << std::endl;
-    char value;
     waterLevel = SendCommand(sensorWaterLevel->CheckCurrentWaterLevel());
-    
     if(waterLevel == "low;")
     {
-        
-        //wait for release
-        SetSluiceState(""); //sluice state when dropping water
-        //omhoogschutten
-        //close all doors
-        CloseAllDoors(lowWaterDoor, highWaterDoor);
-        //rise water
-        std::cout << "rising water" << std::endl;
-        ChangeLevel(highWaterDoor);
-        //open high Doors
-        SendCommand(highWaterDoor->OpenDoor());
-        while(SendCommand(highWaterDoor->CheckDoorState()) != "doorOpen;")
-        {}
-        //vrijgeven voor uitvaren
-        std::cout << "Press g to give free to go out of the sluice" << std::endl;
-        std::cin >> value;
-        int trafficlightNumber;
-        if (highWaterDoor->GetDoorSide() == "Right")
-		{
-			trafficlightNumber = 4;
-		}
-		else{
-			trafficlightNumber = 2;
-		}
-        
-        if (value == 'g')
-        { 
-			SendCommand(trafficLights[trafficlightNumber - 1]->SetRedOff());
-			SendCommand(trafficLights[trafficlightNumber - 1]->SetGreenOn());
-			SendCommand(trafficLights[trafficlightNumber - 2]->SetRedOn());
-			SendCommand(trafficLights[trafficlightNumber - 2]->SetGreenOff());
-            //[1][2][3][4] in simulator
-            //[0][1][2][3] in vector
-            //[R][R][G][R] 
-			//SendCommand("SetTrafficLight3Red:off;"); 
-            //SendCommand("SetTrafficLight3Green:on;");
-            //SendCommand("SetTrafficLight4Red:on;"); 
-            //SendCommand("SetTrafficLight4Green:off;");  
-        }
-        std::cout << "Press g to give free to go in to the sluice" << std::endl;
-        std::cin >> value;
-        if (value == 'g')
-        {
-			SendCommand(trafficLights[trafficlightNumber - 1]->SetRedOn());
-			SendCommand(trafficLights[trafficlightNumber - 1]->SetGreenOff());
-			SendCommand(trafficLights[trafficlightNumber - 2]->SetRedOff());
-			SendCommand(trafficLights[trafficlightNumber - 2]->SetGreenOn());
-            //SendCommand("SetTrafficLight3Red:on;"); 
-            //SendCommand("SetTrafficLight3Green:off;");
-            //SendCommand("SetTrafficLight4Red:off;"); 
-            //SendCommand("SetTrafficLight4Green:on;");  
-        }
-		//SendCommand(highWaterDoor->CloseDoor());
-        //wait for release
-        //when released back to idle
+        Sluicing(highWaterDoor, lowWaterDoor);
     }
     else if(waterLevel == "high;")
     {
-        //wait for release
-        SetSluiceState(""); //sluice state when rising water
-        //omlaagschutten
-        //close all doors
-        CloseAllDoors(lowWaterDoor, highWaterDoor);
-        //dropping water    
-        std::cout << "dropping water" << std::endl;
-        ChangeLevel(lowWaterDoor);
-        //open low doors
-        SendCommand(lowWaterDoor->OpenDoor());
-        while(SendCommand(lowWaterDoor->CheckDoorState()) != "doorOpen;")
-        {}
-        std::cout << "Press g to give free to go out of the sluice" << std::endl;
-        std::cin >> value;
-        if (value == 'g')
-        {
-            //[1][2][3][4] in simulator
-            //[0][1][2][3] in vector
-            //[R][R][G][R] 
-			SendCommand("SetTrafficLight2Red:off;"); 
-            SendCommand("SetTrafficLight2Green:on;");
-            SendCommand("SetTrafficLight1Red:on;"); 
-            SendCommand("SetTrafficLight1Green:off;");  
-		}
-	    //SendCommand(lowWaterDoor->CloseDoor());
-        //wait for release
-        std::cout << "Press g to give free to go in to the sluice" << std::endl;
-        std::cin >> value;
-        if (value == 'g')
-        {
-            SendCommand("SetTrafficLight2Red:on;"); 
-            SendCommand("SetTrafficLight2Green:off;");
-            SendCommand("SetTrafficLight1Red:off;"); 
-            SendCommand("SetTrafficLight1Green:on;");  
-        }
-        //when released back to idle
+		Sluicing(lowWaterDoor, highWaterDoor);
     }
     //verschillende methodes voor omhoog en omlaag schutten?
     SetSluiceState("");//sluice state when ready with sluicing.
     return 0;
 }
+
+void Sluice::Sluicing(Door* door1, Door* door2)
+{
+		std::vector<std::string> doorCommands;
+		char value;
+        //wait for release
+        SetSluiceState(""); //sluice state when dropping water
+        //omhoogschutten
+        //close all doors
+        CloseAllDoors(door1, door2);
+        //rise water
+        std::cout << "rising water" << std::endl;
+        ChangeLevel(door1);
+        //open high Doors
+        door1->OpenDoor();
+        std::string action = door1->GetDoorStatus() ? "open" : "close";
+        std::cout << action << std::endl;
+        doorCommands = door1->CreateDoorMessage(action, false);
+        for(size_t i = 0; i < doorCommands.size(); i++)
+        {
+			SendCommand(doorCommands[i]);
+			std::cout << doorCommands[i] << std::endl;
+		}
+        doorCommands = door1->CreateDoorMessage("", true);
+        while(SendCommand(doorCommands[0]) != "doorOpen;")
+        {}
+        //vrijgeven voor uitvaren
+        std::cout << "Press g to give free to go out of the sluice" << std::endl;
+        std::cin >> value;
+        // Door side left
+        int trafficlightNumber1 = 2;
+        int trafficlightNumber2 = 1;
+        if (door1->GetDoorSide() == "Right")
+		{
+			trafficlightNumber1 = 4;
+			trafficlightNumber2 = 3;
+		}
+
+        if (value == 'g')
+        { 
+			SendCommand(trafficLights[trafficlightNumber1 - 1]->SetRedOff());
+			SendCommand(trafficLights[trafficlightNumber1 - 1]->SetGreenOn());
+            //[1][2][3][4] in simulator
+            //[0][1][2][3] in vector
+            //[R][R][G][R]   
+        }
+        std::cout << "Press g to give free to go in to the sluice" << std::endl;
+        std::cin >> value;
+        if (value == 'g')
+        {
+			SendCommand(trafficLights[trafficlightNumber1 - 1]->SetRedOn());
+			SendCommand(trafficLights[trafficlightNumber1 - 1]->SetGreenOff());
+			SendCommand(trafficLights[trafficlightNumber2 - 1]->SetGreenOn());
+			SendCommand(trafficLights[trafficlightNumber2 - 1]->SetRedOff());
+        }
+        //wait for release
+        //when released back to idle
+}
+
 std::string Sluice::SendCommand(std::string command)
 {  
     if(command == "")

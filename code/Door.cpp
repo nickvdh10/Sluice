@@ -38,38 +38,44 @@ std::string Door::GetDoorSide() const
 	return side;
 }
 
-std::string Door::OpenDoor()
+void Door::OpenDoor()
 {
+	/*std::vector<std::string> messageToSend;
 	if(doorStatus == false)
 	{
 		doorStatus = true;
-		std::string messageToSend = CreateDoorMessage("open", false);
+		messageToSend = CreateDoorMessage("open", false);
+		std::cout << messageToSend[0] << std::endl;
 		return messageToSend;
 	}
-	else
+	std::cout << "door already closed" << std::endl;
+	return messageToSend;*/
+	if(doorStatus == false)
 	{
-		std::cout << "door already open" << std::endl;
-		return "";
+		doorStatus = true;
 	}
 }
 
-std::string Door::CloseDoor()
+void Door::CloseDoor()
 {
+	/*std::vector<std::string> messageToSend;
 	if(doorStatus == true)
 	{
 		doorStatus = false;
-		std::string messageToSend = CreateDoorMessage("close", false);
-		return messageToSend;
+		messageToSend = CreateDoorMessage("close", false);
 	}
-	else
+
+	std::cout << "door already closed" << std::endl;
+	return messageToSend;*/
+	if(doorStatus == true)
 	{
-		std::cout << "door already closed" << std::endl;
-		return "";
+		doorStatus = false;
 	}
 }
-std::string Door::CheckDoorState()
+std::vector<std::string> Door::CheckDoorState()
 {
-	return CreateDoorMessage("", true);
+	std::vector<std::string> doorState = CreateDoorMessage("", true);
+	return doorState;
 }
 
 std::vector<Valve*> Door::GetValves()
@@ -77,21 +83,28 @@ std::vector<Valve*> Door::GetValves()
 	return valves;
 }
 
-std::string Door::CreateDoorMessage(std::string action, bool get)
+std::vector<std::string> Door::CreateDoorMessage(std::string action, bool get)
 {
+	std::vector<std::string> messages;
+	std::string message;
 	if (!side.compare("Left") || !side.compare("Right"))
 	{
 		if (get)
 		{
-			return "GetDoor" + side + ";";
+			//return "GetDoor" + side + ";";
+			message = "GetDoor" + side + ";";
+			messages.push_back(message);
+			return messages;
 		}
 		if (!action.compare("open") || !action.compare("close") || !action.compare("stop"))
 		{
 			// Set asked
-			return "SetDoor" + side + ":" + action + ";";
+			//return "SetDoor" + side + ":" + action + ";";
+			message = "SetDoor" + side + ":" + action + ";";
+			messages.push_back(message);
 		}
 	}
-	return "";
+	return messages;
 }
 
 
