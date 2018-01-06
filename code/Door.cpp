@@ -1,18 +1,15 @@
 #include "Door.h"
 #include <iostream>
 
-Door::Door(std::string side)
-:doorStatus(false)
+Door::Door(Network* network, std::string side)
+:network(network)
+,doorStatus(false)
 ,motorType("")
 ,side(side)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		valves.push_back(new Valve(i+1, side));
-	}
-	for (int i = 0; i < 3; i++)//test loop
-	{
-		std::cout << valves[i]->GetValveLevel() << std::endl << valves[i]->GetValveSide() << std::endl;
+		valves.push_back(new Valve(network, i+1, side));
 	}
 }
 
@@ -28,6 +25,7 @@ void Door::SetDoorStatus(bool status)
 {
 	doorStatus = status;
 }
+
 bool Door::GetDoorStatus()
 {
 	return doorStatus;
@@ -38,44 +36,57 @@ std::string Door::GetDoorSide() const
 	return side;
 }
 
-void Door::OpenDoor()
+bool Door::OpenDoor()
 {
-	/*std::vector<std::string> messageToSend;
 	if(doorStatus == false)
 	{
-		doorStatus = true;
-		messageToSend = CreateDoorMessage("open", false);
-		std::cout << messageToSend[0] << std::endl;
-		return messageToSend;
+		network->SendMessage(network->GetSock(), CreateDoorMessage("open", false));
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			do
+			{
+				network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
+			}
+			while(network->ReceiveMessage(network->GetSock()) != "doorOpen;");	
+			doorStatus = true;
+			return true;
+		}
+		return false;
 	}
-	std::cout << "door already closed" << std::endl;
-	return messageToSend;*/
-	if(doorStatus == false)
+	else
 	{
-		doorStatus = true;
+		std::cout << "door already open" << std::endl;
+		return false;
 	}
 }
 
-void Door::CloseDoor()
+bool Door::CloseDoor()
 {
-	/*std::vector<std::string> messageToSend;
 	if(doorStatus == true)
 	{
-		doorStatus = false;
-		messageToSend = CreateDoorMessage("close", false);
+		network->SendMessage(network->GetSock(), CreateDoorMessage("close", false));
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			do
+			{
+				network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
+			}
+			while(network->ReceiveMessage(network->GetSock()) != "doorClosed;");	
+			doorStatus = false;		
+			return true;
+		}
+		return false;
 	}
-
-	std::cout << "door already closed" << std::endl;
-	return messageToSend;*/
-	if(doorStatus == true)
+	else
 	{
-		doorStatus = false;
+		std::cout << "door already closed" << std::endl;
+		return false;
 	}
 }
-std::vector<std::string> Door::CheckDoorState()
+std::string Door::CheckDoorState()
 {
-	std::vector<std::string> doorState = CreateDoorMessage("", true);
-	return doorState;
+	network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
+	return network->ReceiveMessage(network->GetSock());
 }
 
 std::vector<Valve*> Door::GetValves()
@@ -83,28 +94,26 @@ std::vector<Valve*> Door::GetValves()
 	return valves;
 }
 
-std::vector<std::string> Door::CreateDoorMessage(std::string action, bool get)
+std::string Door::CreateDoorMessage(std::string action, bool get)
 {
-	std::vector<std::string> messages;
-	std::string message;
 	if (!side.compare("Left") || !side.compare("Right"))
 	{
 		if (get)
 		{
-			//return "GetDoor" + side + ";";
-			message = "GetDoor" + side + ";";
-			messages.push_back(message);
-			return messages;
+			return "GetDoor" + side + ";";
 		}
 		if (!action.compare("open") || !action.compare("close") || !action.compare("stop"))
 		{
 			// Set asked
-			//return "SetDoor" + side + ":" + action + ";";
-			message = "SetDoor" + side + ":" + action + ";";
-			messages.push_back(message);
+			return "SetDoor" + side + ":" + action + ";";
 		}
 	}
-	return messages;
+	return "";
+}
+
+Network* Door::GetNetwork()
+{
+	return network;
 }
 
 

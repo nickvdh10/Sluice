@@ -1,14 +1,15 @@
 #include "SensorWaterLevel.h"
-#include "Network.h"
 
-SensorWaterLevel::SensorWaterLevel()
+SensorWaterLevel::SensorWaterLevel(Network* network)
+:network(network)
 {
 }
 
 
 std::string SensorWaterLevel::CheckCurrentWaterLevel()
 {
-	return "GetWaterLevel;";
+	network->SendMessage(network->GetSock(), "GetWaterLevel;");
+	return network->ReceiveMessage(network->GetSock());
 }
 
 double SensorWaterLevel::GetWaterLevelSluice()

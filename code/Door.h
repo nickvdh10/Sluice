@@ -10,18 +10,20 @@
 class Door: public IDoor
 {
 	public:
-		Door(std::string side);
+		Door(Network* network, std::string side);
 		virtual ~Door();
 		bool GetDoorStatus();
 		void SetDoorStatus(bool status);
 		std::string GetDoorSide() const;
-		void OpenDoor();
-		void CloseDoor();
-		std::vector<std::string> CheckDoorState();
+		virtual bool OpenDoor();
+		virtual bool CloseDoor();
+		std::string CheckDoorState();
 		std::vector<Valve*> GetValves();
-		virtual std::vector<std::string> CreateDoorMessage(std::string action, bool get);
+		std::string CreateDoorMessage(std::string action, bool get);
+		Network* GetNetwork();
 
 	private:
+		Network* network;
 		std::vector<Valve*> valves;
 		bool doorStatus;
 		std::string motorType;

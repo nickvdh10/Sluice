@@ -1,5 +1,4 @@
 #include "TrafficLight.h"
-#include <iostream>
 #include <sstream>
 
 TrafficLight::TrafficLight(Network* network, bool lightStatus, int number)
@@ -11,32 +10,19 @@ TrafficLight::TrafficLight(Network* network, bool lightStatus, int number)
 
 bool TrafficLight::GetLightStatus()
 {
-	return lightStatus;
-}
-
-std::string TrafficLight::SetGreenOn()
-{
-	lightStatus = true;
-	std::string messageToSend = CreateTrafficLightMessage("on", "Green", number, false);
-	return messageToSend;
-}
-std::string TrafficLight::SetGreenOff()
-{
-	lightStatus = true;
-	std::string messageToSend = CreateTrafficLightMessage("off", "Green", number, false);
-	return messageToSend;
-}
-std::string TrafficLight::SetRedOn()
-{
-	lightStatus = false;
-	std::string messageToSend = CreateTrafficLightMessage("on", "Red", number, false);
-	return messageToSend;
-}
-std::string TrafficLight::SetRedOff()
-{
-	lightStatus = false;
-	std::string messageToSend = CreateTrafficLightMessage("off", "Red", number, false);
-	return messageToSend;
+	network->SendMessage(network->GetSock() ,CreateTrafficLightMessage("", "Green", number, true));
+	std::string greenStatus = network->ReceiveMessage(network->GetSock());
+	network->SendMessage(network->GetSock() ,CreateTrafficLightMessage("", "Red", number, true));
+	std::string redStatus = network->ReceiveMessage(network->GetSock());
+	if (greenStatus == "on" && redStatus == "off")
+	{
+		return true;
+	}
+	else if (greenStatus == "off" && redStatus == "on")
+	{
+		return false;
+	}
+	return lightStatus; //hier moet nog iets anders komen denk ipv lightstatus?
 }
 
 bool TrafficLight::SetGreen()
@@ -49,10 +35,11 @@ bool TrafficLight::SetGreen()
 	network->SendMessage(network->GetSock(), message2);
 	network->ReceiveMessage(network->GetSock());
 	return lightStatus;
+	//TODO: iets nuttigers returnen? mby ack/nack
 }
 
 bool TrafficLight::SetRed()
-{
+{ 
 	lightStatus = true;
 	std::string message1 = CreateTrafficLightMessage("off", "Green", number, false);
 	network->SendMessage(network->GetSock(), message1);
@@ -61,6 +48,7 @@ bool TrafficLight::SetRed()
 	network->SendMessage(network->GetSock(), message2);
 	network->ReceiveMessage(network->GetSock());
 	return lightStatus;
+	//TODO: iets nuttigers returnen? mby ack/nack
 }
 
 std::string TrafficLight::CreateTrafficLightMessage(std::string action, std::string colour, int number, bool get)
@@ -72,7 +60,7 @@ std::string TrafficLight::CreateTrafficLightMessage(std::string action, std::str
 	//std::string colour = lightStatus ? "Green" : "Red";
 	if (get)
 	{
-		ss << "SetTrafficLight" << number << colour << ";";
+		ss << "GetTrafficLight" << number << colour << ";";
 		return ss.str();
 	}
 	
@@ -80,7 +68,6 @@ std::string TrafficLight::CreateTrafficLightMessage(std::string action, std::str
 	{
 		// Set asked
 		ss << "SetTrafficLight" << number << colour << ":" << action << ";";
-		std::cout << ss.str() << std::endl;
 		return ss.str();
 	}
 	return "FAIL";

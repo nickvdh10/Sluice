@@ -1,7 +1,7 @@
 #include "DoorWithLock.h"
 #include <iostream>
-DoorWithLock::DoorWithLock(std::string side)
-:Door(side)
+DoorWithLock::DoorWithLock(Network* network, std::string side)
+:Door(network, side)
 {
 	
 }
@@ -11,6 +11,54 @@ DoorWithLock::~DoorWithLock()
 	
 }
 
+bool DoorWithLock::OpenDoor()
+{
+	Network* network = GetNetwork();
+	if (GetDoorStatus() == false)
+	{
+		std::string openLock = "SetDoorLock" + GetDoorSide() + ":" + "off" + ";";
+		std::string closeLock = "SetDoorLock" + GetDoorSide() + ":" + "on" + ";";
+		network->SendMessage(network->GetSock(), openLock);
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			Door::OpenDoor();
+			network->SendMessage(network->GetSock(), closeLock);
+			if (network->ReceiveMessage(network->GetSock()) == "ack;")
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool DoorWithLock::CloseDoor()
+{
+	Network* network = GetNetwork();
+	if (GetDoorStatus() == true)
+	{
+		std::string openLock = "SetDoorLock" + GetDoorSide() + ":" + "off" + ";";
+		std::string closeLock = "SetDoorLock" + GetDoorSide() + ":" + "on" + ";";
+		network->SendMessage(network->GetSock(), openLock);
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			Door::CloseDoor();
+			network->SendMessage(network->GetSock(), closeLock);
+			if (network->ReceiveMessage(network->GetSock()) == "ack;")
+			{
+				do
+				{
+					network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
+				}
+				while(network->ReceiveMessage(network->GetSock()) != "doorLocked;");
+				return true;
+				
+			}
+		}
+	}
+	return false;	
+}
+/*
 std::vector<std::string> DoorWithLock::CreateDoorMessage(std::string action, bool get)
 {
 	std::vector<std::string> messages;
@@ -37,4 +85,4 @@ std::vector<std::string> DoorWithLock::CreateDoorMessage(std::string action, boo
 		}
 	}
 	return messages;
-}
+}*/

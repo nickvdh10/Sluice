@@ -6,9 +6,11 @@
 class DoorWithLock : public Door
 {
 	public:
-	DoorWithLock(std::string side);
+	DoorWithLock(Network* network, std::string side);
 	~DoorWithLock();
-	std::vector<std::string> CreateDoorMessage(std::string action, bool get);
+	bool OpenDoor();
+	bool CloseDoor();
+	//std::vector<std::string> CreateDoorMessage(std::string action, bool get);
 
 };
 

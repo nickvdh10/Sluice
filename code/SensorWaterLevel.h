@@ -7,13 +7,14 @@
 class SensorWaterLevel: public ISensorWaterLevel
 {
     public:
-        SensorWaterLevel();
+        SensorWaterLevel(Network* network);
         ~SensorWaterLevel(){}
         std::string CheckCurrentWaterLevel();
         double GetWaterLevelSluice();
         double GetWaterLevelLow();
         double GetWaterLevelHigh();
     private:
+		Network* network;
         double waterLevelSluice;
         double waterLevelLow;
         double waterLevelHigh;

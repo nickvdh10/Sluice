@@ -10,10 +10,6 @@ class TrafficLight: public ITrafficLight
         TrafficLight(Network* network, bool lightStatus, int number);
         ~TrafficLight(){}
         bool GetLightStatus();
-        std::string SetGreenOn(); //Remove later
-        std::string SetGreenOff(); //Remove later
-        std::string SetRedOn(); //Remove later
-        std::string SetRedOff(); //Remove later
         bool SetGreen();
         bool SetRed();
         std::string CreateTrafficLightMessage(std::string action, std::string colour, int number, bool get);

@@ -2,8 +2,9 @@
 #include <iostream>
 #include <sstream>
 
-Valve::Valve(int valveLevel, std::string side)
-:valveLevel(valveLevel)
+Valve::Valve(Network* network, int valveLevel, std::string side)
+:network(network)
+,valveLevel(valveLevel)
 ,side(side)
 ,valveStatus(false)
 {
@@ -22,33 +23,41 @@ std::string Valve::GetValveSide()
 	return side;
 }
 
-std::string Valve::OpenValve()
+bool Valve::OpenValve()
 {
 	if(valveStatus == false)
 	{
 		valveStatus = true;
-		std::string messageToSend = CreateValveMessage("open", false);
-		return messageToSend;
+		network->SendMessage(network->GetSock(), CreateValveMessage("open", false));
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			return true;
+		}
+		return false;
 	}
 	else
 	{
 		std::cout << "valve already open" << std::endl;
-		return "";
+		return false;
 	}
 }
 
-std::string Valve::CloseValve()
+bool Valve::CloseValve()
 {
 	if(valveStatus == true)
 	{
 		valveStatus = false;
-		std::string messageToSend = CreateValveMessage("close", false);
-		return messageToSend;
+		network->SendMessage(network->GetSock(), CreateValveMessage("close", false));
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			return true;
+		}
+		return false;
 	}
 	else
 	{
 		std::cout << "valve already closed" << std::endl;
-		return "";
+		return false;
 	}
 }
 

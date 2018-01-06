@@ -24,7 +24,6 @@ class Sluice
 		int GetPortNumber() const;
 		int GetSock() const;
 		void SetSluiceState(std::string);
-		void CloseAllDoors(Door* door1, Door* door2);
 		std::string ChangeLevel(Door* door);
 		int StartSluicing();
 		void Sluicing(Door* door1, Door* door2);

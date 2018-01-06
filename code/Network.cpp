@@ -17,18 +17,18 @@ Network::~Network()
 
 int Network::CreateConnection(const char * sluiceIP, int portNumber)
 {
-    std::cout << sluiceIP << " " << portNumber << "\n";
-	int sock = 0;
-	struct sockaddr_in  echoServAddr;
-	if((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+	std::cout << sluiceIP << " " << portNumber << "\n";
+	int tempSock = 0;
+	struct sockaddr_in echoServAddr;
+	if((tempSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
 	{
 		return -1;
-    }
-    memset(&echoServAddr, 0, sizeof(echoServAddr));
-    echoServAddr.sin_family      = AF_INET;            
-    echoServAddr.sin_addr.s_addr = inet_addr(sluiceIP);   
-    echoServAddr.sin_port        = htons(portNumber); 
-    if(connect(sock, (struct sockaddr *) &echoServAddr, sizeof(echoServAddr)) < 0)
+	}
+	memset(&echoServAddr, 0, sizeof(echoServAddr));
+	echoServAddr.sin_family = AF_INET;
+	echoServAddr.sin_addr.s_addr = inet_addr(sluiceIP);
+	echoServAddr.sin_port = htons(portNumber);
+	if(connect(tempSock, (struct sockaddr *) &echoServAddr, sizeof(echoServAddr)) < 0)
 	{
 		std::cout << "failed to connect\n";
 		return -1;
@@ -36,8 +36,9 @@ int Network::CreateConnection(const char * sluiceIP, int portNumber)
 	else
 	{
 		std::cout << "connected with " << portNumber << std::endl;
-    }
-    return sock;
+	}
+	sock = tempSock;
+	return sock;
 }
 
 void Network::CloseConnection(int sock)
