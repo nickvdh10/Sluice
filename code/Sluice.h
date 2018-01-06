@@ -28,6 +28,7 @@ class Sluice
 		int StartSluicing();
 		void Sluicing(Door* door1, Door* door2);
 		std::string SendCommand(std::string SendCommand);
+		std::string Alarm();
 		
 		
 	private:

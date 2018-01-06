@@ -22,11 +22,7 @@ bool DoorWithLock::OpenDoor()
 		if (network->ReceiveMessage(network->GetSock()) == "ack;")
 		{
 			Door::OpenDoor();
-			network->SendMessage(network->GetSock(), closeLock);
-			if (network->ReceiveMessage(network->GetSock()) == "ack;")
-			{
-				return true;
-			}
+			return true;
 		}
 	}
 	return false;
@@ -39,21 +35,16 @@ bool DoorWithLock::CloseDoor()
 	{
 		std::string openLock = "SetDoorLock" + GetDoorSide() + ":" + "off" + ";";
 		std::string closeLock = "SetDoorLock" + GetDoorSide() + ":" + "on" + ";";
-		network->SendMessage(network->GetSock(), openLock);
+		Door::CloseDoor();
+		network->SendMessage(network->GetSock(), closeLock);
 		if (network->ReceiveMessage(network->GetSock()) == "ack;")
 		{
-			Door::CloseDoor();
-			network->SendMessage(network->GetSock(), closeLock);
-			if (network->ReceiveMessage(network->GetSock()) == "ack;")
+			do
 			{
-				do
-				{
-					network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
-				}
-				while(network->ReceiveMessage(network->GetSock()) != "doorLocked;");
-				return true;
-				
+				network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
 			}
+			while(network->ReceiveMessage(network->GetSock()) != "doorLocked;");
+			return true;
 		}
 	}
 	return false;	

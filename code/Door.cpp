@@ -35,7 +35,7 @@ std::string Door::GetDoorSide() const
 {
 	return side;
 }
-
+/*
 bool Door::OpenDoor()
 {
 	if(doorStatus == false)
@@ -58,8 +58,8 @@ bool Door::OpenDoor()
 		std::cout << "door already open" << std::endl;
 		return false;
 	}
-}
-
+}*/
+/*
 bool Door::CloseDoor()
 {
 	if(doorStatus == true)
@@ -82,7 +82,57 @@ bool Door::CloseDoor()
 		std::cout << "door already closed" << std::endl;
 		return false;
 	}
+}*/
+
+
+bool Door::OpenDoor()
+{
+	Network* network = GetNetwork();
+    if(GetDoorStatus() == false)
+	{
+
+		network->SendMessage(network->GetSock(), CreateDoorMessage("open", false));
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+			while(CheckDoorState() != "doorOpen;")
+			{
+        	}
+			doorStatus = true;
+			return true;
+		}
+		return false;
+	}
+	else
+	{
+		std::cout << "door already open" << std::endl;
+		return false;
+	}
 }
+
+bool Door::CloseDoor()
+{
+	std::cout << "in door" << std::endl;
+	Network* network = GetNetwork();
+    if(GetDoorStatus() == true)
+	{		
+		network->SendMessage(network->GetSock(), CreateDoorMessage("close", false));
+		if (network->ReceiveMessage(network->GetSock()) == "ack;")
+		{
+        	while(CheckDoorState() != "doorClosed;")
+       	 	{            
+			}
+			doorStatus = false;		
+			return true;
+		}
+		return false;
+	}
+	else
+	{
+		std::cout << "door already closed" << std::endl;
+		return false;
+	}
+}
+
 std::string Door::CheckDoorState()
 {
 	network->SendMessage(network->GetSock(), CreateDoorMessage("", true));

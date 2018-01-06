@@ -114,7 +114,6 @@ std::string Sluice::ChangeLevel(Door* door)
     return "ack;";
 }
 
-
 int Sluice::StartSluicing()
 {
 	for (size_t i = 0; i < trafficLights.size(); i++)
@@ -127,13 +126,21 @@ int Sluice::StartSluicing()
     waterLevel = sensorWaterLevel->CheckCurrentWaterLevel();
     if(waterLevel == "low;")
     {
+        std::cout << "water level = low" << std::endl;
         Sluicing(highWaterDoor, lowWaterDoor);
     }
     else if(waterLevel == "high;")
     {
+        std::cout << "water level = high" << std::endl;
 		Sluicing(lowWaterDoor, highWaterDoor);
     }
-    //verschillende methodes voor omhoog en omlaag schutten?
+    else
+    {
+        std::cout << "water level not high or low" << std::endl;
+        std::cout << "water level is: " << waterLevel << std::endl;
+        std::cout << "dropping water" << std::endl;
+        Sluicing(lowWaterDoor, highWaterDoor);
+    }
     SetSluiceState("");//sluice state when ready with sluicing.
     return 0;
 }
@@ -145,7 +152,9 @@ void Sluice::Sluicing(Door* door1, Door* door2)
         //wait for release
         SetSluiceState(""); //sluice state when dropping water
         //close all doors
+        std::cout << "close door1" << std::endl;
         door1->CloseDoor();
+        std::cout << "close door2" << std::endl;
         door2->CloseDoor();
         //rise water
         std::cout << "rising water" << std::endl;
@@ -190,4 +199,24 @@ std::string Sluice::SendCommand(std::string command)
     }
     network->SendMessage(sock, command);
     return network->ReceiveMessage(sock);
+}
+std::string Sluice::Alarm()
+{
+    for (size_t i = 0; i < trafficLights.size(); i++)
+	{
+		trafficLights[i]->SetRed();
+    }  
+    int j = 0;
+    for(; j < 3; j++)
+    {    
+        highWaterDoor->GetValves()[j]->CloseValve();
+        lowWaterDoor->GetValves()[j]->CloseValve();
+    }   
+
+    highWaterDoor->CloseDoor();
+    lowWaterDoor->CloseDoor();
+    char released;
+    std::cout << "press r to release alarm" << std::endl;
+    std::cin >> released;
+    return "Alarm released";
 }

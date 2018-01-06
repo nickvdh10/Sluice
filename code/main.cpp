@@ -46,7 +46,7 @@ int main()
             Sluice *sluice = new Sluice(port);
             sluice->SendCommand("GetWaterLevel;");
         
-            char value;
+            char value = 0;
             while (value != 'b')
             {
                 std::cout << "Press s to start sluicing" << std::endl;
@@ -60,10 +60,10 @@ int main()
                     break;
                     case 'a':
                     //set alarm
+                    sluice->Alarm();
                     break;
                     case 'b':
-                    //quit program
-                    exit (0);
+                    //back to menu
                     break;
                     default:
                     std::cout << "wrong input" << std::endl;

@@ -7,7 +7,9 @@ class DoorWithDifferentEngine : public Door
 {
 	public:
 	DoorWithDifferentEngine(Network* network, std::string side);
-	//~DoorWithDifferentEngine(){}
+	~DoorWithDifferentEngine();
+	bool OpenDoor();
+	bool CloseDoor();
 };
 
 #endif
