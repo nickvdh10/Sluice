@@ -87,7 +87,6 @@ bool Door::CloseDoor()
 
 bool Door::OpenDoor()
 {
-	Network* network = GetNetwork();
     if(GetDoorStatus() == false)
 	{
 
@@ -111,8 +110,6 @@ bool Door::OpenDoor()
 
 bool Door::CloseDoor()
 {
-	std::cout << "in door" << std::endl;
-	Network* network = GetNetwork();
     if(GetDoorStatus() == true)
 	{		
 		network->SendMessage(network->GetSock(), CreateDoorMessage("close", false));
@@ -130,6 +127,15 @@ bool Door::CloseDoor()
 	{
 		std::cout << "door already closed" << std::endl;
 		return false;
+	}
+}
+
+void Door::StopDoor()
+{
+	if (CheckDoorState() == "doorOpening;" || CheckDoorState() == "DoorClosing;")
+	{
+		network->SendMessage(network->GetSock(), CreateDoorMessage("stop", false));
+		network->ReceiveMessage(network->GetSock());
 	}
 }
 

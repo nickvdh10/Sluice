@@ -2,7 +2,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Sluice.h"
+#include <pthread.h>
 
+void *threadFunc1(void *arg)
+{
+	Sluice* sluice = static_cast<Sluice*>(arg);
+	sluice->StartSluicing();
+	return NULL;
+}
+
+void *threadFunc2(void *arg)
+{
+	Sluice* sluice = static_cast<Sluice*>(arg);
+	char value = 0;
+	do
+	{
+		std::cin >> value;
+	}
+	while(value != 'a');
+	sluice->Alarm();
+	return NULL;
+}
 
 int main()
 {
@@ -44,19 +64,24 @@ int main()
         if(port != 0)
         {
             Sluice *sluice = new Sluice(port);
+            //zin hieronder nodig?
             sluice->SendCommand("GetWaterLevel;");
-        
+			pthread_t sluiceThread;	
+			pthread_t alarmThread;
             char value = 0;
             while (value != 'b')
             {
                 std::cout << "Press s to start sluicing" << std::endl;
-                std::cout << "Press a to activate alarm" << std::endl;
+                std::cout << "(At all times) Press a to activate alarm" << std::endl;
                 std::cout << "Press b to go back" << std::endl;
+                // Create a thread to check if an alarm has occured
+                pthread_create(&alarmThread, NULL, threadFunc2, sluice);
                 std::cin >> value;
                 switch(value)
                 {
                     case 's':
-                    sluice->StartSluicing();
+                    // Create a thread to execute the sluicing
+                    pthread_create(&sluiceThread, NULL, threadFunc1, sluice);
                     break;
                     case 'a':
                     //set alarm
@@ -67,7 +92,10 @@ int main()
                     break;
                     default:
                     std::cout << "wrong input" << std::endl;
-                }
+                }               
+
+				pthread_join(sluiceThread, NULL);
+				pthread_join(alarmThread, NULL);
             }
         }
 	 }

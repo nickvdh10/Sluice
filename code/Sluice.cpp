@@ -127,6 +127,7 @@ int Sluice::StartSluicing()
     if(waterLevel == "low;")
     {
         std::cout << "water level = low" << std::endl;
+        SetSluiceState("Sluicing");
         Sluicing(highWaterDoor, lowWaterDoor);
     }
     else if(waterLevel == "high;")
@@ -134,7 +135,7 @@ int Sluice::StartSluicing()
         std::cout << "water level = high" << std::endl;
 		Sluicing(lowWaterDoor, highWaterDoor);
     }
-    else
+    else //deze laten staan ja? als t goed is kan alleen low of high zijn
     {
         std::cout << "water level not high or low" << std::endl;
         std::cout << "water level is: " << waterLevel << std::endl;
@@ -156,8 +157,6 @@ void Sluice::Sluicing(Door* door1, Door* door2)
         door1->CloseDoor();
         std::cout << "close door2" << std::endl;
         door2->CloseDoor();
-        //rise water
-        std::cout << "rising water" << std::endl;
         ChangeLevel(door1);
         //open high Doors
         door1->OpenDoor();
@@ -201,22 +200,19 @@ std::string Sluice::SendCommand(std::string command)
     return network->ReceiveMessage(sock);
 }
 std::string Sluice::Alarm()
-{
-    for (size_t i = 0; i < trafficLights.size(); i++)
-	{
-		trafficLights[i]->SetRed();
-    }  
-    int j = 0;
-    for(; j < 3; j++)
+{    
+    for(int j = 0; j < 3; j++)
     {    
         highWaterDoor->GetValves()[j]->CloseValve();
         lowWaterDoor->GetValves()[j]->CloseValve();
-    }   
+    }  
+	// Stop the doors
+	highWaterDoor->StopDoor();
+	lowWaterDoor->StopDoor();
 
-    highWaterDoor->CloseDoor();
-    lowWaterDoor->CloseDoor();
     char released;
     std::cout << "press r to release alarm" << std::endl;
     std::cin >> released;
+    StartSluicing();
     return "Alarm released";
 }

@@ -17,6 +17,7 @@ class Door: public IDoor
 		std::string GetDoorSide() const;
 		virtual bool OpenDoor();
 		virtual bool CloseDoor();
+		virtual void StopDoor();
 		std::string CheckDoorState();
 		std::vector<Valve*> GetValves();
 		std::string CreateDoorMessage(std::string action, bool get);

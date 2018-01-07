@@ -39,11 +39,9 @@ bool DoorWithLock::CloseDoor()
 		network->SendMessage(network->GetSock(), closeLock);
 		if (network->ReceiveMessage(network->GetSock()) == "ack;")
 		{
-			do
+			while(CheckDoorState() != "doorLocked;")
 			{
-				network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
 			}
-			while(network->ReceiveMessage(network->GetSock()) != "doorLocked;");
 			return true;
 		}
 	}
