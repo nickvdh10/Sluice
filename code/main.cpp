@@ -7,12 +7,11 @@
 void *threadFunc1(void *arg)
 {
     
-    int lightnumber1;
-    int lightnumber2;
+    
 	Sluice* sluice = static_cast<Sluice*>(arg);
     sluice->StartSluicing();
     //vrijgeven voor uitvaren
-    std::cout << "Press g to give free to go out of the sluice" << std::endl;
+   /* std::cout << "Press g to give free to go out of the sluice" << std::endl;
     // Door side left
     char value = 0;
     do
@@ -28,7 +27,7 @@ void *threadFunc1(void *arg)
 		std::cin >> value;
 	}
 	while(value != 'g'); 
-    sluice->GiveFreeIn(&lightnumber1, &lightnumber2);
+    sluice->GiveFreeIn(&lightnumber1, &lightnumber2);*/
     
 	return NULL;
 }
@@ -36,7 +35,8 @@ void *threadFunc1(void *arg)
 void *threadFunc2(void *arg)
 {
 	Sluice* sluice = static_cast<Sluice*>(arg);
-	char value = 0;
+    char value = 0;
+    std::cin.clear();
 	do
 	{
 		std::cin >> value;
@@ -58,6 +58,7 @@ int main()
 	    std::cout << "3: 5557" << std::endl;
         std::cout << "4: 5558" << std::endl;
         std::cout << "q: exit program" << std::endl;
+        std::cin.clear();
         std::cin >> choice;
         int port = 0;
 
@@ -98,6 +99,7 @@ int main()
                 std::cout << "Press b to go back" << std::endl;
                 // Create a thread to check if an alarm has occured
                 pthread_create(&alarmThread, NULL, threadFunc2, sluice);
+                std::cin.clear();
                 std::cin >> value;
                 switch(value)
                 {

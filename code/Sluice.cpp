@@ -166,7 +166,7 @@ int Sluice::StartSluicing()
     SetSluiceState("");//sluice state when ready with sluicing.
     return 0;
 }
-void Sluice::GiveFreeOut(int* trafficlightNumber1, int* trafficlightNumber2)
+/*void Sluice::GiveFreeOut(int* trafficlightNumber1, int* trafficlightNumber2)
 {
     *trafficlightNumber1 = 2;
     *trafficlightNumber2 = 1;
@@ -184,23 +184,49 @@ void Sluice::GiveFreeIn(int* trafficlightNumber1, int* trafficlightNumber2)
 {
     trafficLights[*trafficlightNumber1 - 1]->SetRed();
     trafficLights[*trafficlightNumber2 - 1]->SetGreen();
-}
+}*/
 
 void Sluice::Sluicing(Door* door1, Door* door2)
 {
-		std::vector<std::string> doorCommands;
+	std::vector<std::string> doorCommands;
 		
-        //wait for release
-        SetSluiceState(""); //sluice state when dropping water
-        //close all doors
-        std::cout << "close door1" << std::endl;
-        door1->CloseDoor();
-        std::cout << "close door2" << std::endl;
-        door2->CloseDoor();
-        ChangeLevel(door1);
-        //open high Doors
-        door1->OpenDoor();
-        
+    //wait for release
+    SetSluiceState(""); //sluice state when dropping water
+    //close all doors
+    std::cout << "close door1" << std::endl;
+    door1->CloseDoor();
+    std::cout << "close door2" << std::endl;
+    door2->CloseDoor();
+    ChangeLevel(door1);
+    //open high Doors
+    door1->OpenDoor();
+
+    std::cout << "Press g to give free to go out of the sluice" << std::endl;
+    // Door side left
+    char value = 0;
+    std::cin.clear();
+    std::cin >> value;
+    if(value == 'g')
+    {
+        int trafficlightNumber1 = 2;
+        int trafficlightNumber2 = 1;
+        if (door1->GetDoorSide() == "Right")
+        {
+            trafficlightNumber1 = 3;
+            trafficlightNumber2 = 4;
+        }
+    
+        trafficLights[trafficlightNumber1 - 1]->SetGreen();
+
+        std::cout << "Press g to give free to go in to the sluice" << std::endl;
+        std::cin.clear();
+        std::cin >> value;
+        if(value == 'g')
+        {
+            trafficLights[trafficlightNumber1 - 1]->SetRed();
+            trafficLights[trafficlightNumber2 - 1]->SetGreen();
+        }
+    }
         //wait for release
         //when released back to idle
 }
@@ -230,6 +256,7 @@ std::string Sluice::Alarm()
 
     char released;
     std::cout << "press r to release alarm" << std::endl;
+    std::cin.clear();
     std::cin >> released;
     sluiceState = historyState;
     //StartSluicing();
