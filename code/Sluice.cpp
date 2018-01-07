@@ -104,7 +104,7 @@ std::string Sluice::ChangeLevel(Door* door)
             
         }
     }
-    std::cout << "waterlevel is on desired level\n";
+    
     //close all valves
     door->GetValves()[0]->CloseValve();
     door->GetValves()[1]->CloseValve();
@@ -127,29 +127,69 @@ int Sluice::StartSluicing()
     if(waterLevel == "low;")
     {
         std::cout << "water level = low" << std::endl;
-        SetSluiceState("Sluicing");
+        SetSluiceState("RisingWater");
         Sluicing(highWaterDoor, lowWaterDoor);
     }
     else if(waterLevel == "high;")
     {
         std::cout << "water level = high" << std::endl;
+        SetSluiceState("DroppingWater");
 		Sluicing(lowWaterDoor, highWaterDoor);
     }
-    else //deze laten staan ja? als t goed is kan alleen low of high zijn
+    else //deze laten staan ja? als t goed is kan alleen low of high zijn. 
     {
         std::cout << "water level not high or low" << std::endl;
         std::cout << "water level is: " << waterLevel << std::endl;
         std::cout << "dropping water" << std::endl;
         Sluicing(lowWaterDoor, highWaterDoor);
+        /**/
+        //Wanneer alarm is geweest kan het water ergens in het midden staan
+        //Water level is dan niet high of low wat deze deed was dan automatisch het water weer zakken (dropping water)
+        //hieronder geprobeerd om via de states weer na de zelfde functie te gaan. Probleem is dat wanneer hij met risen bezig was
+        // hij weer onderaan begint. 
+
+
+        /*if(sluiceState == "DroppingWater")
+        {
+            Sluicing(lowWaterDoor, highWaterDoor);
+        }
+        else if(sluiceState == "RisingWater")
+        {
+            Sluicing(highWaterDoor, lowWaterDoor);
+        }
+        else 
+        {
+            Sluicing(lowWaterDoor, highWaterDoor);
+        }*/
+        
     }
     SetSluiceState("");//sluice state when ready with sluicing.
     return 0;
+}
+void Sluice::GiveFreeOut(int* trafficlightNumber1, int* trafficlightNumber2)
+{
+    *trafficlightNumber1 = 2;
+    *trafficlightNumber2 = 1;
+    if (highWaterDoor->GetDoorSide() == "Right")
+    {
+        *trafficlightNumber1 = 3;
+        *trafficlightNumber2 = 4;
+    }
+    trafficLights[*trafficlightNumber1 - 1]->SetGreen();
+        //[1][2][3][4] in simulator
+        //[0][1][2][3] in vector
+        //[R][R][G][R]  
+}
+void Sluice::GiveFreeIn(int* trafficlightNumber1, int* trafficlightNumber2)
+{
+    trafficLights[*trafficlightNumber1 - 1]->SetRed();
+    trafficLights[*trafficlightNumber2 - 1]->SetGreen();
 }
 
 void Sluice::Sluicing(Door* door1, Door* door2)
 {
 		std::vector<std::string> doorCommands;
-		char value;
+		
         //wait for release
         SetSluiceState(""); //sluice state when dropping water
         //close all doors
@@ -160,32 +200,7 @@ void Sluice::Sluicing(Door* door1, Door* door2)
         ChangeLevel(door1);
         //open high Doors
         door1->OpenDoor();
-        //vrijgeven voor uitvaren
-        std::cout << "Press g to give free to go out of the sluice" << std::endl;
-        std::cin >> value;
-        // Door side left
-        int trafficlightNumber1 = 2;
-        int trafficlightNumber2 = 1;
-        if (door1->GetDoorSide() == "Right")
-		{
-			trafficlightNumber1 = 3;
-			trafficlightNumber2 = 4;
-		}
-
-        if (value == 'g')
-        { 
-			trafficLights[trafficlightNumber1 - 1]->SetGreen();
-            //[1][2][3][4] in simulator
-            //[0][1][2][3] in vector
-            //[R][R][G][R]   
-        }
-        std::cout << "Press g to give free to go in to the sluice" << std::endl;
-        std::cin >> value;
-        if (value == 'g')
-        {
-			trafficLights[trafficlightNumber1 - 1]->SetRed();
-			trafficLights[trafficlightNumber2 - 1]->SetGreen();
-        }
+        
         //wait for release
         //when released back to idle
 }
@@ -201,6 +216,9 @@ std::string Sluice::SendCommand(std::string command)
 }
 std::string Sluice::Alarm()
 {    
+    std::string historyState;
+    historyState = sluiceState;
+    sluiceState = "Alarm";
     for(int j = 0; j < 3; j++)
     {    
         highWaterDoor->GetValves()[j]->CloseValve();
@@ -213,6 +231,7 @@ std::string Sluice::Alarm()
     char released;
     std::cout << "press r to release alarm" << std::endl;
     std::cin >> released;
-    StartSluicing();
+    sluiceState = historyState;
+    //StartSluicing();
     return "Alarm released";
 }

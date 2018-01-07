@@ -6,8 +6,30 @@
 
 void *threadFunc1(void *arg)
 {
+    
+    int lightnumber1;
+    int lightnumber2;
 	Sluice* sluice = static_cast<Sluice*>(arg);
-	sluice->StartSluicing();
+    sluice->StartSluicing();
+    //vrijgeven voor uitvaren
+    std::cout << "Press g to give free to go out of the sluice" << std::endl;
+    // Door side left
+    char value = 0;
+    do
+	{
+		std::cin >> value;
+	}
+	while(value != 'g');    
+    sluice->GiveFreeOut(&lightnumber1, &lightnumber2); 
+    value = 0;
+    std::cout << "Press g to give free to go in to the sluice" << std::endl;
+    do
+	{
+		std::cin >> value;
+	}
+	while(value != 'g'); 
+    sluice->GiveFreeIn(&lightnumber1, &lightnumber2);
+    
 	return NULL;
 }
 

@@ -26,6 +26,8 @@ class Sluice
 		void SetSluiceState(std::string);
 		std::string ChangeLevel(Door* door);
 		int StartSluicing();
+		void GiveFreeOut(int* trafficlightNumber1, int* trafficlightNumber2);
+		void GiveFreeIn(int* trafficlightNumber1, int* trafficlightNumber2);
 		void Sluicing(Door* door1, Door* door2);
 		std::string SendCommand(std::string SendCommand);
 		std::string Alarm();

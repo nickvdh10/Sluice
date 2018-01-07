@@ -87,7 +87,7 @@ bool Door::CloseDoor()
 
 bool Door::OpenDoor()
 {
-    if(GetDoorStatus() == false)
+    if(CheckDoorState() == "doorClosed;")
 	{
 
 		network->SendMessage(network->GetSock(), CreateDoorMessage("open", false));
@@ -110,7 +110,7 @@ bool Door::OpenDoor()
 
 bool Door::CloseDoor()
 {
-    if(GetDoorStatus() == true)
+    if(CheckDoorState() == "doorOpen;")
 	{		
 		network->SendMessage(network->GetSock(), CreateDoorMessage("close", false));
 		if (network->ReceiveMessage(network->GetSock()) == "ack;")
