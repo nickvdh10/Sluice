@@ -6,7 +6,7 @@
 int main()
 {
 	char choice = '0';
-	while(choice != 'q')
+	while(choice != '5')
 	{
 		choice = 0;
 		std::cout << "Enter port number:" << std::endl;
