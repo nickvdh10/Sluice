@@ -99,20 +99,28 @@ void Sluice::ChangeLevel(Door* door)
 
 int Sluice::StartSluicing()
 {
+	
+	if(network->GetSock() <= 0)
+	{
+		return -1;
+	}
 	for (size_t i = 0; i < trafficLights.size(); i++)
 	{
 		trafficLights[i]->SetRed();
 	}
-	SetSluiceState(""); //sluice state when starting the sluice
+	 //sluice state when starting the sluice
 	//process of the sluicing
 	std::cout << "starting sluicing" << std::endl;
+	SetSluiceState("ChekkingWaterLevel");
 	std::string waterLevel = sensorWaterLevel->CheckCurrentWaterLevel();
 	if(waterLevel == "low;")
 	{
+		SetSluiceState("RisingWater");
 		Sluicing(highWaterDoor, lowWaterDoor);
 	}
 	else if(waterLevel == "high;")
 	{
+		SetSluiceState("DroppingWater");
 		Sluicing(lowWaterDoor, highWaterDoor);
 	}
 	/*
@@ -131,7 +139,7 @@ void Sluice::Sluicing(Door* door1, Door* door2)
 	std::vector<std::string> doorCommands;
 	char value;
 	//wait for release
-	SetSluiceState(""); //sluice state when dropping water
+	 //sluice state when dropping water
 	//close all doors
 	door1->CloseDoor();
 	door2->CloseDoor();
