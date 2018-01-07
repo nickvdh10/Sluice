@@ -2,17 +2,16 @@
 #define IDOOR_H
 
 #include <string>
+#include "Network.h"
 
 class IDoor
 {
 	public:
-		~IDoor(){}
-		void OpenDoor();
-		void CloseDoor();
+		virtual ~IDoor(){}
+		virtual bool OpenDoor() = 0;
+		virtual bool CloseDoor() = 0;
+		virtual void StopDoor() = 0;		
 		
-	private:
-		bool doorStatus;
-		std::string motorType;
 };
 
 #endif

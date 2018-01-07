@@ -3,9 +3,8 @@
 
 Door::Door(Network* network, std::string side)
 :network(network)
-,doorStatus(false)
-,motorType("")
 ,side(side)
+,doorStatus(false)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -35,55 +34,6 @@ std::string Door::GetDoorSide() const
 {
 	return side;
 }
-/*
-bool Door::OpenDoor()
-{
-	if(doorStatus == false)
-	{
-		network->SendMessage(network->GetSock(), CreateDoorMessage("open", false));
-		if (network->ReceiveMessage(network->GetSock()) == "ack;")
-		{
-			do
-			{
-				network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
-			}
-			while(network->ReceiveMessage(network->GetSock()) != "doorOpen;");	
-			doorStatus = true;
-			return true;
-		}
-		return false;
-	}
-	else
-	{
-		std::cout << "door already open" << std::endl;
-		return false;
-	}
-}*/
-/*
-bool Door::CloseDoor()
-{
-	if(doorStatus == true)
-	{
-		network->SendMessage(network->GetSock(), CreateDoorMessage("close", false));
-		if (network->ReceiveMessage(network->GetSock()) == "ack;")
-		{
-			do
-			{
-				network->SendMessage(network->GetSock(), CreateDoorMessage("", true));
-			}
-			while(network->ReceiveMessage(network->GetSock()) != "doorClosed;");	
-			doorStatus = false;		
-			return true;
-		}
-		return false;
-	}
-	else
-	{
-		std::cout << "door already closed" << std::endl;
-		return false;
-	}
-}*/
-
 
 bool Door::OpenDoor()
 {
@@ -145,7 +95,7 @@ std::string Door::CheckDoorState()
 	return network->ReceiveMessage(network->GetSock());
 }
 
-std::vector<Valve*> Door::GetValves()
+std::vector<Valve*> Door::GetValves() const
 {
 	return valves;
 }

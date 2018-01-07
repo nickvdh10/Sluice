@@ -1,16 +1,15 @@
 #ifndef IVALVE_H
 #define IVALVE_H
 
+#include "Network.h"
+
 class IValve
 {
 	public:
-		~IValve(){}
-		bool GetValveStatus();
-		void OpenValve();
-		void CloseValve();
+		virtual ~IValve(){}
+		virtual bool OpenValve() = 0;
+		virtual bool CloseValve() = 0;
 		
-	private:
-		bool valveStatus;
 };
 
 #endif

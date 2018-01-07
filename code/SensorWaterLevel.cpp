@@ -12,18 +12,4 @@ std::string SensorWaterLevel::CheckCurrentWaterLevel()
 	return network->ReceiveMessage(network->GetSock());
 }
 
-double SensorWaterLevel::GetWaterLevelSluice()
-{
-	return waterLevelSluice;
-}
-
-double SensorWaterLevel::GetWaterLevelLow()
-{
-	return waterLevelLow;
-}
-
-double SensorWaterLevel::GetWaterLevelHigh()
-{
-	return waterLevelHigh;
-}
 

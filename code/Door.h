@@ -3,9 +3,7 @@
 
 #include "IDoor.h"
 #include "Valve.h"
-#include "Network.h"
 #include <vector>
-#include <string>
 
 class Door: public IDoor
 {
@@ -19,20 +17,18 @@ class Door: public IDoor
 		virtual bool CloseDoor();
 		virtual void StopDoor();
 		std::string CheckDoorState();
-		std::vector<Valve*> GetValves();
+		std::vector<Valve*> GetValves() const;
 		std::string CreateDoorMessage(std::string action, bool get);
 		Network* GetNetwork();
 
 	private:
 		Network* network;
 		std::vector<Valve*> valves;
-		bool doorStatus;
-		std::string motorType;
 		std::string side;
+		bool doorStatus;
 		
-		// Empty copyconst and assignment operator since we don't want copies to be made (?)
-		//Door(const Door&) { /* do nothing */ };
-		//Door& operator= (const Door&) { return *this; };   
+		Door(const Door&) { /* do nothing */ };
+		Door& operator= (const Door&) { return *this; };   
 };
 
 #endif

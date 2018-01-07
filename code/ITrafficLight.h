@@ -1,21 +1,13 @@
 #ifndef ITRAFFICLIGHT_H
 #define ITRAFFICLIGHT_H
 
-#include <iostream>
+#include "Network.h"
 
 class ITrafficLight
 {
     public:
-        ~ITrafficLight(){}
-        bool GetLightStatus();
-        std::string SetGreenOn();
-        std::string SetGreenOff();
-        std::string SetRedOn();
-        std::string SetRedOff();
-        std::string CreateTrafficLightMessage(std::string action, std::string colour, int number, bool get);
-
-    private:
-        int number;
-        bool LightStatus;
+        virtual ~ITrafficLight(){}
+        virtual bool SetGreen() = 0;
+        virtual bool SetRed() = 0;
 };
 #endif

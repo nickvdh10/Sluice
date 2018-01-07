@@ -1,17 +1,13 @@
 #ifndef ISENSORWATERLEVEL_H
 #define ISENSORWATERLEVEL_H
 
+#include "Network.h"
 
 class ISensorWaterLevel
 {
     public:
-        ~ISensorWaterLevel() {}
-        double GetWaterLevelSluice();
-        double GetWaterLevelLow();
-        double GetWaterLevelHigh();
-    private:
-        double waterLevelSluice;
-        double waterLevelLow;
-        double waterLevelHigh;
+        virtual ~ISensorWaterLevel() {}
+        virtual std::string CheckCurrentWaterLevel() = 0;
+
 };
 #endif

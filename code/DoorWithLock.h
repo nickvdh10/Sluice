@@ -10,8 +10,6 @@ class DoorWithLock : public Door
 	~DoorWithLock();
 	bool OpenDoor();
 	bool CloseDoor();
-	//std::vector<std::string> CreateDoorMessage(std::string action, bool get);
-
 };
 
 #endif

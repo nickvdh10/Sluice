@@ -2,7 +2,6 @@
 #define VALVE_H
 
 #include "IValve.h"
-#include "Network.h"
 
 class Valve : public IValve
 {
@@ -15,13 +14,13 @@ class Valve : public IValve
 		bool OpenValve();
 		bool CloseValve();
 		std::string CreateValveMessage(std::string action, bool get);
+		
 	private:
 		Network* network;
 		int valveLevel; 
 		std::string side;
 		bool valveStatus;
 		
-		// Empty copyconst and assignment operator since we don't want copies to be made (?)
 		Valve(const Valve&) { /* do nothing */ };
 		Valve& operator= (const Valve&) { return *this; };   
 };

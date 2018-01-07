@@ -2,8 +2,7 @@
 #define NETWORK_H
 
 #include <string>
-//#include "INetwork.h"
-//: public INetwork
+
 class Network
 {
 	public:
@@ -17,7 +16,7 @@ class Network
 	private:
 		int portNumber;
 		int sock;
-		// Empty copyconst and assignment operator since we don't want copies to be made (?)
+
 		Network(const Network&) { /* do nothing */ };
 		Network& operator= (const Network&) { return *this; };   
 };
