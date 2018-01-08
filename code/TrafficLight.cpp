@@ -39,7 +39,7 @@ bool TrafficLight::SetGreen()
 
 bool TrafficLight::SetRed()
 { 
-	lightStatus = true;
+	lightStatus = false;
 	std::string message1 = CreateTrafficLightMessage("off", "Green", number, false);
 	network->SendMessage(network->GetSock(), message1);
 	network->ReceiveMessage(network->GetSock());
