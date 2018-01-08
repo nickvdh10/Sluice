@@ -4,12 +4,10 @@
 DoorWithDifferentEngine::DoorWithDifferentEngine(Network* network, std::string side)
 :Door(network, side)
 {
-
 }
 
 DoorWithDifferentEngine::~DoorWithDifferentEngine()
 {
-
 }
 
 bool DoorWithDifferentEngine::OpenDoor()
@@ -40,7 +38,6 @@ bool DoorWithDifferentEngine::OpenDoor()
 
 bool DoorWithDifferentEngine::CloseDoor()
 {
-	std::cout << "in door" << std::endl;
 	Network* network = GetNetwork();
     if(GetDoorStatus() == true)
 	{		

@@ -39,7 +39,6 @@ bool Door::OpenDoor()
 {
     if(CheckDoorState() == "doorClosed;")
 	{
-
 		network->SendMessage(network->GetSock(), CreateDoorMessage("open", false));
 		if (network->ReceiveMessage(network->GetSock()) == "ack;")
 		{

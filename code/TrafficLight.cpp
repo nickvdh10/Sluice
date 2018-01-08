@@ -22,7 +22,7 @@ bool TrafficLight::GetLightStatus()
 	{
 		return false;
 	}
-	return lightStatus; //hier moet nog iets anders komen denk ipv lightstatus?
+	return lightStatus;
 }
 
 bool TrafficLight::SetGreen()
@@ -35,7 +35,6 @@ bool TrafficLight::SetGreen()
 	network->SendMessage(network->GetSock(), message2);
 	network->ReceiveMessage(network->GetSock());
 	return lightStatus;
-	//TODO: iets nuttigers returnen? mby ack/nack
 }
 
 bool TrafficLight::SetRed()
@@ -48,16 +47,11 @@ bool TrafficLight::SetRed()
 	network->SendMessage(network->GetSock(), message2);
 	network->ReceiveMessage(network->GetSock());
 	return lightStatus;
-	//TODO: iets nuttigers returnen? mby ack/nack
 }
 
 std::string TrafficLight::CreateTrafficLightMessage(std::string action, std::string colour, int number, bool get)
 {
-	//SetTrafficLight[1..4][Red|Green]:[on|off]
-	//GetTrafficLight[1..4][Red|Green]
-	// TODO: replace first "colour" with a number propperty
 	std::stringstream ss;
-	//std::string colour = lightStatus ? "Green" : "Red";
 	if (get)
 	{
 		ss << "GetTrafficLight" << number << colour << ";";

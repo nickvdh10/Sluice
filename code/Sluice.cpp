@@ -1,6 +1,7 @@
 #include "Sluice.h"
 #include <iostream>
 const char* standardIp = "127.0.0.1";
+
 Sluice::Sluice(int portNumber)
 :sluiceState("Idle")
 {
@@ -123,14 +124,13 @@ int Sluice::StartSluicing()
 		SetSluiceState("DroppingWater");
 		Sluicing(lowWaterDoor, highWaterDoor);
 	}
-	/*
 	else
 	{
 		std::cout << "water level not high or low" << std::endl;
 		std::cout << "water level is: " << waterLevel << std::endl;
 		std::cout << "dropping water" << std::endl;
 		Sluicing(lowWaterDoor, highWaterDoor);
-	}*/
+	}
 	SetSluiceState("");//sluice state when ready with sluicing.
 	return 0;
 }
@@ -138,8 +138,6 @@ void Sluice::Sluicing(Door* door1, Door* door2)
 {
 	std::vector<std::string> doorCommands;
 	char value;
-	//wait for release
-	 //sluice state when dropping water
 	//close all doors
 	door1->CloseDoor();
 	door2->CloseDoor();
@@ -161,9 +159,6 @@ void Sluice::Sluicing(Door* door1, Door* door2)
 	if (value == 'g')
 	{
 		trafficLights[trafficlightNumber1 - 1]->SetGreen();
-		//[1][2][3][4] in simulator
-		//[0][1][2][3] in vector
-		//[R][R][G][R]
 	}
 	std::cout << "Press g to give free to go in to the sluice" << std::endl;
 	std::cin >> value;

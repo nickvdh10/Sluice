@@ -7,12 +7,10 @@
 
 Network::Network()
 {
-	
 }
 
 Network::~Network()
 {
-	
 }
 
 int Network::CreateConnection(const char * sluiceIP, int portNumber)
@@ -64,7 +62,6 @@ std::string Network::ReceiveMessage(int sock)
    
     if(bytesRcvd > 0 && receiveString != NULL && receiveString[0] == '\0')
     {
-        //throw std::invalid_argument("String is empty or NULL");  
         std::cout << "No message received:.. " << std::endl;
         return "noMessage";  
     }
